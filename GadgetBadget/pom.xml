@@ -25,6 +25,8 @@
 			<version>1.19.4</version>
 		</dependency>
 
+
+		
 		<!--MYSQL Connector -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -51,7 +53,13 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-
+		<!-- added by IT19058160 -->
+		<dependency>
+ <groupId>org.json</groupId>
+ <artifactId>json</artifactId>
+ <version>20170516</version>
+ </dependency>
+ 
 	</dependencies>
 
 	<build>
