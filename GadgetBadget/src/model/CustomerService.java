@@ -2,32 +2,55 @@ package model;
 //IT19058160
 //name : W.M.C.S Bandara
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import model.Customer;
-import util.AppProperties;
-import util.DBConnect;
+
+
+
 import util.Helper;
 
 
 public class CustomerService implements ICustomer{//public class name CustomerService which implements ICustomer
 	//declaring
-	public static final Logger log = Logger.getLogger(AppProperties.class.getName());
+	//public static final Logger log = Logger.getLogger(AppProperties.class.getName());
 	private static boolean isSuccess;
-	private static Connection con = null;
+
 	private static Statement stmt = null;
 	private static ResultSet rs = null;
 	private static PreparedStatement pmt=null;
+	
+	private static Connection con=null;
+	
+
+	
+	public static Connection getConnecton() {
+		//implement methods
+		try {
+			Class.forName("com.mysql.jdbc.Driver"); 
+			con= DriverManager.getConnection("jdbc:mysql://localhost:3306/assigment", "root", ""); 
+			//For testing
+			System.out.print("Successfully connected"); 
+			
+			
+		}
+		catch(Exception e)
+		{
+			System.out.println("Database connection is not success!");
+			//log.log(Level.SEVERE, e.getMessage());
+		}
+		return con;
+	}
+	
+	
     public boolean validatee(String username,String password) {
     	try {
-    		con=DBConnect.getConnecton();//database connection
+    		con=getConnecton();//database connection
     		stmt=con.createStatement();
     		String sql = "select * from customer where username='"+username+"' and password='"+password+"'";
     		rs=stmt.executeQuery(sql);
@@ -40,7 +63,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     		}
     	}catch(Exception e){
     		e.printStackTrace();
-    		log.log(Level.SEVERE, e.getMessage());
+    		//log.log(Level.SEVERE, e.getMessage());
     	}
     	return isSuccess;//return values
     }
@@ -50,7 +73,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
 	
 	try { 
 		//database connection
-	    con = DBConnect.getConnecton();
+	    con = getConnecton();
 	    stmt = con.createStatement();
 	    String sql = "select * from customer where username='"+userName+"' ";	    
 	    rs = stmt.executeQuery(sql);
@@ -71,7 +94,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
 	}
 	catch(Exception e) {
 	    e.printStackTrace();
-	    log.log(Level.SEVERE, e.getMessage());
+	    //log.log(Level.SEVERE, e.getMessage());
 	}
 	
 	return cus;
@@ -89,7 +112,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
 		//check if there are any errors
 		try {
 			//database connection
-			con = DBConnect.getConnecton();
+			con = getConnecton();
     		stmt = con.createStatement();
 			String sql = "insert into sendmessage values('"+id+"','"+from+"' , '"+to+"','"+subject+"','"+message+"')";
 			int rs=stmt.executeUpdate(sql);
@@ -105,7 +128,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			log.log(Level.SEVERE, e.getMessage());
+			//log.log(Level.SEVERE, e.getMessage());
 		}
 		
 		return isSuccess;
@@ -117,7 +140,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     	ArrayList<String> arrayLst1= new ArrayList<String>();//declearing
     	 
     	try {
-    		 con = DBConnect.getConnecton();//Database connection
+    		 con = getConnecton();//Database connection
     	
     		 pmt=con.prepareStatement("select id from sendmessage");
     		 ResultSet rs = pmt.executeQuery();
@@ -127,7 +150,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     			 arrayLst1.add(rs.getString("id"));
     		 }
     	}catch(SQLException e) {
-    		log.log(Level.SEVERE, e.getMessage());
+    		//log.log(Level.SEVERE, e.getMessage());
     	}
     	finally 
     	{
@@ -144,7 +167,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     		}
     		catch(SQLException e)
     		{
-    			log.log(Level.SEVERE, e.getMessage());
+    			//log.log(Level.SEVERE, e.getMessage());
     		}
     	}
     	return arrayLst1;//return value
@@ -159,7 +182,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     	
     	try {
     		//database connection
-    		con = DBConnect.getConnecton();
+    		con = getConnecton();
     		stmt = con.createStatement();
     	    String sql = "insert into customer values (0,'"+name+"','"+email+"','"+phone+"','"+username+"','"+password+"','"+type+"')";
     		int rs = stmt.executeUpdate(sql);
@@ -174,7 +197,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     	}
     	catch (Exception e) {
     		e.printStackTrace();
-    		log.log(Level.SEVERE, e.getMessage());
+    		//log.log(Level.SEVERE, e.getMessage());
     	}
  	
     	return isSuccess;
@@ -184,7 +207,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     	//method implemenation
     	try {
     		//database connection
-    		con = DBConnect.getConnecton();
+    		con = getConnecton();
     		stmt = con.createStatement();
     		String sql = "update customer set name='"+name+"',email='"+email+"',phone='"+phone+"',username='"+username+"',password='"+password+"',type='"+type+"'"
     				+ "where id='"+id+"'";
@@ -200,7 +223,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     	}
     	catch(Exception e) {
     		e.printStackTrace();
-    		log.log(Level.SEVERE, e.getMessage());
+    		//log.log(Level.SEVERE, e.getMessage());
     	}
     	
     	return isSuccess;
@@ -214,7 +237,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     	
     	try {//try catch block
     		//connect with database
-    		con = DBConnect.getConnecton();
+    		con = getConnecton();
     		stmt = con.createStatement();
     		String sql = "select * from customer where id='"+convertedID+"'";
     		rs = stmt.executeQuery(sql);
@@ -234,7 +257,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     	}
     	catch(Exception e) {
     		e.printStackTrace();
-    		log.log(Level.SEVERE, e.getMessage());
+    		//log.log(Level.SEVERE, e.getMessage());
     	}	
     	return cus;	
     }
@@ -244,7 +267,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
 		boolean isSuccess = false;
     	
     	try {
-    		con = DBConnect.getConnecton();
+    		con = getConnecton();
     		stmt = con.createStatement();
     		String sql = "delete from receivemessage where id='"+idd+"'";
     		int rs = stmt.executeUpdate(sql);
@@ -259,7 +282,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     	}
     	catch (Exception e) {
     		e.printStackTrace();
-    		log.log(Level.SEVERE, e.getMessage());
+    		//log.log(Level.SEVERE, e.getMessage());
     	}
  	
     	return isSuccess;
@@ -272,7 +295,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
 	 String output = ""; 
 	 try
 	 { 
-		 con = DBConnect.getConnecton();
+		 con = getConnecton();
  		stmt = con.createStatement();
 	 if (con == null) 
 	 {return "Error while connecting to the database for reading."; } 
@@ -327,7 +350,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
 	 String output = ""; 
 	 try
 	 { 
-		 con = DBConnect.getConnecton();
+		 con = getConnecton();
 		stmt = con.createStatement();
 	 if (con == null) 
 	 {return "Error while connecting to the database for reading."; } 
@@ -376,7 +399,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
 	 String output = ""; 
 	 try
 	 { 
-		 con = DBConnect.getConnecton();
+		 con = getConnecton();
 		stmt = con.createStatement();
 	 if (con == null) 
 	 {return "Error while connecting to the database for reading."; } 
