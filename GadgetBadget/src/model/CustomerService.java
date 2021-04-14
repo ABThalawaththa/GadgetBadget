@@ -211,6 +211,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     		stmt = con.createStatement();
     		String sql = "update customer set name='"+name+"',email='"+email+"',phone='"+phone+"',username='"+username+"',password='"+password+"',type='"+type+"'"
     				+ "where id='"+id+"'";
+    		//test
     		int rs = stmt.executeUpdate(sql);
     		
     		if(rs > 0) {
