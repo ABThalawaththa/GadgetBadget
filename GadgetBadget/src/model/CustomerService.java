@@ -206,7 +206,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     public boolean updatecustomer(String id, String name, String email, String phone, String username, String password,String type) {
     	//method implemenation
     	try {
-    		//database connection
+    		//database connection.
     		con = getConnecton();
     		stmt = con.createStatement();
     		String sql = "update customer set name='"+name+"',email='"+email+"',phone='"+phone+"',username='"+username+"',password='"+password+"',type='"+type+"'"
