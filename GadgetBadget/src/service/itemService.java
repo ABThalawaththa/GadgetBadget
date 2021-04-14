@@ -1,5 +1,5 @@
 package service;
-import service.CustomerService; 
+import model.CustomerService; 
 
 //For REST Service
 import javax.ws.rs.*; 
