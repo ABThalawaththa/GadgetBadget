@@ -2,6 +2,9 @@ package model;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class FundRequest {
 
 	private int fundID;
