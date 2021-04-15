@@ -45,10 +45,11 @@ public class FundRequestService {
 	public String insertRequest(@FormParam("clientID") int clientID, @FormParam("productID") int productID,
 			@FormParam("contactName") String contactName, @FormParam("contactNo") String contactNo, 
 			@FormParam("contactMail") String contactMail, @FormParam("message") String message, 
-			@FormParam("orgName") String orgName, @FormParam("date") Date date) 
+			@FormParam("orgName") String orgName) throws ParseException 
 	{
+		
 		String output = fr.insertRequest(clientID,productID,contactName,
-				contactNo, contactMail ,message, orgName, date);
+				contactNo, contactMail ,message, orgName);
 		return output;
 	}
 
@@ -70,13 +71,10 @@ public class FundRequestService {
 		String contactMail = jObject.get("contactMail").getAsString();
 		String message = jObject.get("message").getAsString();
 		String orgName = jObject.get("orgName").getAsString();
-		String jDate = jObject.get("date").getAsString();
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = sdf.parse(jDate);
 		
 		String output = fr.updateRequest(fundID , clientID, productID, contactName, contactNo, contactMail,
-				message, orgName, date);
+				message, orgName);
 		return output;
 	}
 	
@@ -102,4 +100,5 @@ public class FundRequestService {
 	public FundRequest getRequest(@PathParam("id") int id) {
 		return fr.getFundRequest(id);
 	}
+	
 }

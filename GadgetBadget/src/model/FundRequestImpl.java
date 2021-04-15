@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 public class FundRequestImpl implements IFundRequestImpl{
 
@@ -120,7 +122,7 @@ public class FundRequestImpl implements IFundRequestImpl{
 
 	@Override
 	public String insertRequest(int clientID, int productID, String contactName, String contactNo, String contactMail,
-			String message, String orgName, Date date) {
+			String message, String orgName) {
 		
 		// TODO Auto-generated method stub
 		String output = "";
@@ -131,9 +133,9 @@ public class FundRequestImpl implements IFundRequestImpl{
 				return "Error while connecting to the database";
 			}
 			// create a prepared statement
-			String query = " insert into fundrequests (`clientID`,`productID`,`contactName`,`contactNo`,`contactMail`,"
-					+ "'message','orgName','date')"
-					+ " values (?, ?, ?, ?, ?, ?, ?, ?)";
+			String query = "insert into fundrequests(clientID, productID, contactName, "
+					+ "contactNo, contactMail, message, orgName,date) "
+					+ "values (?, ?, ?, ?, ?, ?, ?,?)";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
 			preparedStmt.setInt(1, clientID);
@@ -143,22 +145,23 @@ public class FundRequestImpl implements IFundRequestImpl{
 			preparedStmt.setString(5, contactMail);
 			preparedStmt.setString(6, message);
 			preparedStmt.setString(7, orgName);
-			preparedStmt.setDate(8, (java.sql.Date) date);
+			preparedStmt.setDate(8, new java.sql.Date(new java.util.Date().getTime()));
 			// execute the statement
 
 			preparedStmt.execute();
 			con.close();
 			output = "Inserted successfully";
 		} catch (Exception e) {
-			output = "Error while inserting the request.";
 			System.err.println(e.getMessage());
+			output = "Error while inserting the request.";
+			
 		}
 		return output;
 	}
 
 	@Override
 	public String updateRequest(int fundID , int clientID, int productID, String contactName, String contactNo, String contactMail,
-			String message, String orgName, Date date) {
+			String message, String orgName) {
 		// TODO Auto-generated method stub
 		String output = "";
 		try {
@@ -179,7 +182,7 @@ public class FundRequestImpl implements IFundRequestImpl{
 			preparedStmt.setString(5, contactMail);
 			preparedStmt.setString(6, message);
 			preparedStmt.setString(7, orgName);
-			preparedStmt.setDate(8, (java.sql.Date) date);
+			preparedStmt.setDate(8,new java.sql.Date(new java.util.Date().getTime()));
 			preparedStmt.setInt(9, fundID);
 			// execute the statement
 			preparedStmt.execute();
