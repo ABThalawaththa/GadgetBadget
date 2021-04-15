@@ -119,7 +119,7 @@ public class FundRequestImpl implements IFundRequestImpl{
 	}
 
 	@Override
-	public String insertItem(int clientID, int productID, String contactName, String contactNo, String contactMail,
+	public String insertRequest(int clientID, int productID, String contactName, String contactNo, String contactMail,
 			String message, String orgName, Date date) {
 		
 		// TODO Auto-generated method stub
@@ -157,7 +157,7 @@ public class FundRequestImpl implements IFundRequestImpl{
 	}
 
 	@Override
-	public String updateItem(int fundID , int clientID, int productID, String contactName, String contactNo, String contactMail,
+	public String updateRequest(int fundID , int clientID, int productID, String contactName, String contactNo, String contactMail,
 			String message, String orgName, Date date) {
 		// TODO Auto-generated method stub
 		String output = "";
@@ -194,7 +194,7 @@ public class FundRequestImpl implements IFundRequestImpl{
 
 
 	@Override
-	public String deleteItem(int fundID) {
+	public String deleteRequest(int fundID) {
 		// TODO Auto-generated method stub
 		String output = "";
 		try {
