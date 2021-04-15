@@ -1,19 +1,119 @@
 package model;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import java.util.Date;
 
-
-@Path("/Hello")
 public class FundRequest {
 
-	@GET
-	@Path("/")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String hello() {
-		return "test";
+	private int fundID;
+	
+	private int clientID;
+	
+	private int productID;
+	
+	private String contactName;
+	
+	private String contactNo;
+	
+	private String contactMail;
+	
+	private String message;
+	
+	private String orgName;
+	
+	private Date date;
+
+	
+	
+	public FundRequest() {
+		
 	}
+
+	public FundRequest(int fundID, int clientID, int productID, String contactName, String contactNo,
+			String contactMail, String message, String orgName, Date date) {
+		super();
+		this.fundID = fundID;
+		this.clientID = clientID;
+		this.productID = productID;
+		this.contactName = contactName;
+		this.contactNo = contactNo;
+		this.contactMail = contactMail;
+		this.message = message;
+		this.orgName = orgName;
+		this.date = date;
+	}
+
+	public int getFundID() {
+		return fundID;
+	}
+
+	public void setFundID(int fundID) {
+		this.fundID = fundID;
+	}
+
+	public int getClientID() {
+		return clientID;
+	}
+
+	public void setClientID(int clientID) {
+		this.clientID = clientID;
+	}
+
+	public int getProductID() {
+		return productID;
+	}
+
+	public void setProductID(int productID) {
+		this.productID = productID;
+	}
+
+	public String getContactName() {
+		return contactName;
+	}
+
+	public void setContactName(String contactName) {
+		this.contactName = contactName;
+	}
+
+	public String getContactNo() {
+		return contactNo;
+	}
+
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
+	}
+
+	public String getContactMail() {
+		return contactMail;
+	}
+
+	public void setContactMail(String contactMail) {
+		this.contactMail = contactMail;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
+	
 	
 }
