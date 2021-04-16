@@ -55,10 +55,26 @@ public class FundRequestService {
 
 	@PUT
 	@Path("/")
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String updateRequest(String data) throws ParseException {
 		
+		//Convert the input string to an XML document
+		 Document doc = Jsoup.parse(data, "", Parser.xmlParser()); 
+		 
+		//Read the value from the element <itemID>
+		 int fundID = Integer.parseInt(doc.select("fundID").text());
+		 int clientID = Integer.parseInt(doc.select("clientID").text());
+		 int productID = Integer.parseInt(doc.select("productID").text());
+		 String contactName = doc.select("contactName").text();
+		 String contactNo = doc.select("contactNo").text();
+		 String contactMail = doc.select("contactMail").text();
+		 String message = doc.select("message").text();
+		 String orgName = doc.select("orgName").text();
+		//System.out.println(fundID + clientID+ productID+ contactName+ contactNo+ contactMail+
+		//		message+ orgName);
+		
+		/*
 		// Convert the input string to a JSON object
 		JsonObject jObject = new JsonParser().parse(data).getAsJsonObject();
 		
@@ -71,7 +87,7 @@ public class FundRequestService {
 		String contactMail = jObject.get("contactMail").getAsString();
 		String message = jObject.get("message").getAsString();
 		String orgName = jObject.get("orgName").getAsString();
-		
+		*/
 		
 		String output = fr.updateRequest(fundID , clientID, productID, contactName, contactNo, contactMail,
 				message, orgName);
@@ -87,7 +103,7 @@ public class FundRequestService {
 	//Convert the input string to an XML document
 	 Document doc = Jsoup.parse(data, "", Parser.xmlParser()); 
 	 
-	//Read the value from the element <itemID>
+	//Read the value from the element
 	 int fundID = Integer.parseInt(doc.select("fundID").text()); 
 	 String output = fr.deleteRequest(fundID); 
 	return output; 
