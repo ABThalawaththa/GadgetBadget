@@ -19,12 +19,4 @@
 		<servlet-name>Jersey Web Application</servlet-name>
 		<url-pattern>/WebApi/*</url-pattern>
 	</servlet-mapping>
-<<<<<<< HEAD
-	
-	
-
-
-	
-=======
->>>>>>> parent of 41a3369 (dependency modification)
 </web-app>
