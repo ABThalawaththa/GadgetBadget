@@ -1,17 +1,20 @@
 package model;
 
+import java.util.List;
 
 public interface IFundRequestImpl {
 
-	public String readFundRequests();
+	String readFundRequests();
 	
-	public FundRequest getFundRequest(int id);
+	FundRequest getFundRequest(int id);
 	
-	public String insertRequest(int clientID, int productID, String contactName, String contactNo, String contactMail,
+	String insertRequest(int clientID, int productID, String contactName, String contactNo, String contactMail,
 			String message, String orgName);
 	
-	public String deleteRequest(int fundID);
+	String deleteRequest(int fundID);
 	
-	public String updateRequest(int fundID , int clientID, int productID, String contactName, String contactNo, String contactMail,
+	String updateRequest(int fundID , int clientID, int productID, String contactName, String contactNo, String contactMail,
 			String message, String orgName);
+
+	List<FundRequest> getAllRequests();
 }

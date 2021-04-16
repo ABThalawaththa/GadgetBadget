@@ -5,13 +5,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class FundRequestImpl implements IFundRequestImpl{
 
-	
+	//create a connection to the database
 	private Connection connect() {
 		Connection con = null;
 		try {
@@ -25,6 +26,9 @@ public class FundRequestImpl implements IFundRequestImpl{
 		return con;
 	}
 
+	
+	//read the all fund requests details from the db
+	
 	@Override
 	public String readFundRequests() {
 		// TODO Auto-generated method stub
@@ -80,6 +84,9 @@ public class FundRequestImpl implements IFundRequestImpl{
 		return output;
 	}
 
+	
+	//read a fund requests and pass it as a object
+	
 	@Override
 	public FundRequest getFundRequest(int id) {
 		// TODO Auto-generated method stub
@@ -120,6 +127,9 @@ public class FundRequestImpl implements IFundRequestImpl{
 		return null;
 	}
 
+	
+	//create a new fund request and store the details in the db
+	
 	@Override
 	public String insertRequest(int clientID, int productID, String contactName, String contactNo, String contactMail,
 			String message, String orgName) {
@@ -159,6 +169,9 @@ public class FundRequestImpl implements IFundRequestImpl{
 		return output;
 	}
 
+	
+	//update a fund request details 
+	
 	@Override
 	public String updateRequest(int fundID , int clientID, int productID, String contactName, String contactNo, String contactMail,
 			String message, String orgName) {
@@ -196,6 +209,8 @@ public class FundRequestImpl implements IFundRequestImpl{
 	}
 
 
+	//delete a fund request
+	
 	@Override
 	public String deleteRequest(int fundID) {
 		// TODO Auto-generated method stub
@@ -221,6 +236,66 @@ public class FundRequestImpl implements IFundRequestImpl{
 			System.err.println(e.getMessage());
 		}
 		return output;
+	}
+	
+	//read all the fund requests and pass them inside a list
+	
+	@Override
+	public List<FundRequest> getAllRequests() {
+		// TODO Auto-generated method stub
+		
+		// Prepare the list to store fund requests
+		List<FundRequest> list = new ArrayList<>();
+					
+		try {
+			Connection con = connect();
+			if (con == null) {
+				System.out.println("Error while connecting to the database");
+				return null;
+			}
+			
+
+			String query = "select * from fundrequests";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			// iterate through the rows in the result set
+			while (rs.next()) {
+				int fundID = rs.getInt("fundID");
+				int clientID = rs.getInt("clientID");
+				int productID = rs.getInt("productID");
+				String contactName = rs.getString("contactName");
+				String contactNo = rs.getString("contactNo");
+				String contactMail = rs.getString("contactMail");
+				String message = rs.getString("message");
+				String orgName = rs.getString("orgName");
+				Date date = rs.getDate("date");
+				
+				// Add into the list
+				FundRequest fr = new FundRequest();
+				fr.setFundID(fundID);
+				fr.setClientID(clientID);
+				fr.setProductID(productID);
+				fr.setContactName(contactName);
+				fr.setContactNo(contactNo);
+				fr.setContactMail(contactMail);
+				fr.setMessage(message);
+				fr.setOrgName(orgName);
+				fr.setDate(date);
+				
+				list.add(fr);
+				
+			}
+			con.close();
+			
+		} catch (Exception e) {
+			
+			System.out.println("Error while reading the requests.");
+			return null;
+			
+			
+		}
+		return list;
 	}
 
 }

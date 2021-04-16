@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+//fund request model class
+
 @XmlRootElement
 public class FundRequest {
 

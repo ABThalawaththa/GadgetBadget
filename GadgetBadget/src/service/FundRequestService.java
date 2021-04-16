@@ -1,8 +1,6 @@
 package service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -19,11 +17,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.GsonBuilder;
 
 import model.FundRequest;
 import model.FundRequestImpl;
+
 
 
 @Path("/fundRequest")
@@ -31,6 +29,22 @@ public class FundRequestService {
 
 	FundRequestImpl fr = new FundRequestImpl();
 
+	
+	//get all the fund requests details as a json file
+	
+	@GET
+	@Path("/getAllRequests")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getAllRequests() {
+		
+		GsonBuilder gb = new GsonBuilder();
+		gb.setPrettyPrinting();
+		return gb.create().toJson(fr.getAllRequests());
+		
+	}
+	
+	//display all the fund requests as a html table
+	
 	@GET
 	@Path("/")
 	@Produces(MediaType.TEXT_HTML)
@@ -38,6 +52,9 @@ public class FundRequestService {
 		return fr.readFundRequests();
 	}
 
+	
+	//insert fund request as a form and store them inside the db
+	
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -53,6 +70,9 @@ public class FundRequestService {
 		return output;
 	}
 
+	
+	//get fund details as a xml data fString and update the db
+	
 	@PUT
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
@@ -94,6 +114,9 @@ public class FundRequestService {
 		return output;
 	}
 	
+	
+	//delete the fund request by getting the fund id as a xml data string
+	
 	@DELETE
 	@Path("/") 
 	@Consumes(MediaType.APPLICATION_XML) 
@@ -109,6 +132,8 @@ public class FundRequestService {
 	return output; 
 	}
 	
+	
+	//produces fund request details as a xml data by passing the fund id through url
 	
 	@GET
 	@Path("/{id}")
