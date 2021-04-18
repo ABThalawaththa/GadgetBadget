@@ -25,11 +25,19 @@ public String readItems(@PathParam("username") String username,
 	String display="invalid";
  Boolean output =  service.validatee(username, password);
  if(output == true) {
+	 service.session(username);
 	 display = "valid";
+	 
  }
  return display;
  } 
-
+@GET
+@Path("/sessiondata/") 
+@Produces(MediaType.TEXT_HTML) 
+public String sessiondata() 
+ { 
+ return service.sessiondata(); 
+ }
 
 @GET
 @Path("/msg/") 

@@ -443,8 +443,111 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
 	 return output; 
 	 }
 	
+	public void session(String username){
+		
+		 String output = ""; 
+		 try
+		 { 
+			 con = getConnecton();
+			stmt = con.createStatement();
+		 if (con == null) 
+		 { } 
+		 // Prepare the html table to be displayed
+		 
+		 
+		 String query = "select * from customer  where username='"+username+"'"; 
+		 Statement stmt = con.createStatement(); 
+		 ResultSet rs = stmt.executeQuery(query); 
+		 // iterate through the rows in the result set
+		 while (rs.next()) 
+		 { 
+		 String id = Integer.toString(rs.getInt("id")); 
+		 String name = rs.getString("name"); 
+		 String email = rs.getString("email");  
+		 String phone = rs.getString("phone"); 
+		 String un = rs.getString("username"); 
+		 String password = rs.getString("password");
+		 String type = rs.getString("type");
+		 
+		 
+		 insertsession(id,name,email,phone,un,password,type);
+		 }
+ 	}
+ 	catch (Exception e) {
+ 		e.printStackTrace();
+ 		//log.log(Level.SEVERE, e.getMessage());
+ 	}
 	
 	
-	
+		 }
+	public void insertsession(String id,String name,String email,String phone,String un,String password,String type) {
+		
+		 try {
+	    		//database connection
+	    		con = getConnecton();
+	    		stmt = con.createStatement();
+	    		 String sql = "insert into session values (0,'"+name+"','"+email+"','"+phone+"','"+un+"','"+password+"','"+type+"')";
+	    		int rs = stmt.executeUpdate(sql);
+	    		
+	    		if(rs > 0) {//if condition
+	    			isSuccess = true;
+	    		} 
+	    		else {
+	    			isSuccess = false;
+	    		}
+	    		
+	    	}
+	    	catch (Exception e) {
+	    		e.printStackTrace();
+	    		//log.log(Level.SEVERE, e.getMessage());
+	    	}
+	}
+	public String sessiondata()
+	 { 
+		 String output = ""; 
+		 try
+		 { 
+			 con = getConnecton();
+			stmt = con.createStatement();
+		 if (con == null) 
+		 { } 
+		 // Prepare the html table to be displayed
+		 
+		 
+		 String query = "select * from session"; 
+		 Statement stmt = con.createStatement(); 
+		 ResultSet rs = stmt.executeQuery(query); 
+		 // iterate through the rows in the result set
+		 while (rs.next()) 
+		 { 
+		 String id = Integer.toString(rs.getInt("id")); 
+		 String name = rs.getString("name"); 
+		 String email = rs.getString("email");  
+		 String phone = rs.getString("phone"); 
+		 String un = rs.getString("username"); 
+		 String password = rs.getString("password");
+		 String type = rs.getString("type");
+		 // Add into the html table
+		 output += "<p>" +"Id : "+id + "</p>"; 
+		 output += "<p>" + "Name : "+name + "</p>"; 
+		 output += "<p>" +"Email : "+ email + "</p>"; 
+		 output += "<p>" + "Phone : "+phone + "</p>"; 
+		 output += "<p>" +"User Name : "+ un + "</p>"; 
+		 output += "<p>" +"Password : "+ password + "</p>"; 
+		 output += "<p>" +"Type : "+ type + "</p>"; 
+		 // buttons
+		 
+		 } 
+		 con.close(); 
+		 // Complete the html table
+		 output += "</table>"; 
+		 } 
+		 catch (Exception e) 
+		 { 
+		 output = "Error while reading the items."; 
+		 System.err.println(e.getMessage()); 
+		 } 
+		 return output; 
+		 }
 	
 }
