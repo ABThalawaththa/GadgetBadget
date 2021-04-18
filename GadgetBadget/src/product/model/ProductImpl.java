@@ -26,7 +26,7 @@ public class ProductImpl implements IProduct {
 	}
 	
 	public String insertProduct(String productTitle,String productDescription,
-			String productType,String productCategory) {
+			String productType,String productCategory,int researcherId) {
 		String output = "";
 		try {
 			Connection con = productDBConnection();
@@ -35,8 +35,8 @@ public class ProductImpl implements IProduct {
 			}
 
 			// create a prepared statement
-			String query = " insert into products " + "(`productTitle`,`productDescription`,`productType`,`productCategory`)"
-					+ " values (?, ?, ?, ?)";
+			String query = " insert into products " + "(`productTitle`,`productDescription`,`productType`,`productCategory`,`researcherId`)"
+					+ " values (?, ?, ?, ?, ?)";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 
 			// binding values
@@ -44,6 +44,7 @@ public class ProductImpl implements IProduct {
 			preparedStmt.setString(2, productDescription);
 			preparedStmt.setString(3, productType);
 			preparedStmt.setString(4, productCategory);
+			preparedStmt.setInt(5,researcherId);
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
