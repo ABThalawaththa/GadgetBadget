@@ -10,8 +10,17 @@ public class Product {
 	private String productDescription;
 	private String productType;
 	private String productCategory;
+	private int resercherId;
 	
-	
+
+	public int getResercherId() {
+		return resercherId;
+	}
+
+	public void setResercherId(int resercherId) {
+		this.resercherId = resercherId;
+	}
+
 	public Product(int productId, String productTitle, String productDescription, String productType,
 			String productCategory) {
 		super();
@@ -76,8 +85,11 @@ public class Product {
 	@Override
 	public String toString() {
 		return "Product [productId=" + productId + ", productTitle=" + productTitle + ", productDescription="
-				+ productDescription + ", productType=" + productType + ", productCategory=" + productCategory + "]";
+				+ productDescription + ", productType=" + productType + ", productCategory=" + productCategory
+				+ ", resercherId=" + resercherId + "]";
 	}
+
+	
 
 
 

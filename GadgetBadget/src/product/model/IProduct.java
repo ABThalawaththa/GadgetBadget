@@ -12,6 +12,6 @@ public interface IProduct {
 			String productType,String productCategory);
 	
 	public List<Product> getProductByType(String productType);
-	public String deleteItem(int productId);
+	public String deleteProduct(int productId);
 
 }

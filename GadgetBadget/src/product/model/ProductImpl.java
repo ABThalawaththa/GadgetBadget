@@ -71,6 +71,7 @@ public class ProductImpl implements IProduct {
 				product.setProductDescription(rs.getString("productDescription"));
 				product.setProductType(rs.getString("productType"));
 				product.setProductCategory(rs.getString("productCategory"));
+				product.setResercherId(rs.getInt("resercherId"));
 				productList.add(product);
 			}
 			con.close();
@@ -141,7 +142,7 @@ public class ProductImpl implements IProduct {
 		
 	}
 	
-	public String deleteItem(int productId) {
+	public String deleteProduct(int productId) {
 		String output = "";
 
 		try {

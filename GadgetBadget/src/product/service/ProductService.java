@@ -53,8 +53,9 @@ public class ProductService {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
 	public String insertProduct(@FormParam("productTitle") String productTitle, @FormParam("productDescription") String productDescription,
-			@FormParam("productType") String productType, @FormParam("productCategory") String productCategory) {
-		String output = iproduct.insertProduct(productTitle, productDescription, productType, productCategory);
+			@FormParam("productType") String productType, @FormParam("productCategory") String productCategory, 
+			@FormParam("researcherID") int researcherID) {
+		String output = iproduct.insertProduct(productTitle, productDescription, productType, productCategory,researcherID);
 		return output;
 	}
 	
@@ -73,7 +74,7 @@ public class ProductService {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
 	public String deleteProduct(@FormParam("productId") int productId) {
-		String output = iproduct.deleteItem(productId);
+		String output = iproduct.deleteProduct(productId);
 		return output;
 	}
 
