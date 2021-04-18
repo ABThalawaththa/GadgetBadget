@@ -1,11 +1,12 @@
-package service;
-import model.CustomerService; 
-
+package userService_service;
 //For REST Service
 import javax.ws.rs.*; 
 import javax.ws.rs.core.MediaType; 
 //For JSON
-import com.google.gson.*; 
+import com.google.gson.*;
+
+import userService_model.CustomerService;
+
 //For XML
 import org.jsoup.*; 
 import org.jsoup.parser.*; 
@@ -25,11 +26,19 @@ public String readItems(@PathParam("username") String username,
 	String display="invalid";
  Boolean output =  service.validatee(username, password);
  if(output == true) {
+	 service.session(username);
 	 display = "valid";
+	 
  }
  return display;
  } 
-
+@GET
+@Path("/sessiondata/") 
+@Produces(MediaType.TEXT_HTML) 
+public String sessiondata() 
+ { 
+ return service.sessiondata(); 
+ }
 
 @GET
 @Path("/msg/") 
