@@ -1,4 +1,4 @@
-package model;
+package userService_model;
 
 public class Customer {//public class named customer
 	//declaring variables

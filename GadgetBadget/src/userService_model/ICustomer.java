@@ -1,4 +1,4 @@
-package model;
+package userService_model;
 
 //import java.util.List;
 

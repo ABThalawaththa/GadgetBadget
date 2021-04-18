@@ -1,4 +1,4 @@
-package util;
+package userService_util;
 //IT19058160
 //name : W.M.C.S Bandara
 import java.util.ArrayList;

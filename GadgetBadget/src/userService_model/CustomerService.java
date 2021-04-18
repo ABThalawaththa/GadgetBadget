@@ -1,4 +1,4 @@
-package model;
+package userService_model;
 //IT19058160
 //name : W.M.C.S Bandara
 import java.sql.Connection;
@@ -10,10 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-
-import util.Helper;
+import userService_util.Helper;
 
 
 public class CustomerService implements ICustomer{//public class name CustomerService which implements ICustomer
