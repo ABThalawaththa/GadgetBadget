@@ -59,10 +59,26 @@ public class ProductImpl implements IProduct {
 		return output;
 	}
 
-	public List<Product> getAllProducts() {
+	public HashMap<String, Object> getAllProducts() {
+		// To return product List
 		List<Product> productList = new ArrayList<Product>();
+		
+		// Create Error Message
+		Error em = new Error();
+
+		// Initialize Data to send
+		HashMap<String, Object> data = new HashMap<String, Object>();
+
 		try {
 			Connection con = productDBConnection();
+			if (con == null) {
+				System.out.println("Error while connecting to the database");
+				em.setErrorMessage("Error while connecting to the database");
+				//Return connection error
+				data.put("ConnectionError", em);
+				return data;
+			}
+
 			// create a prepared statement
 			String query = "select * from products";
 			Statement stmt = con.createStatement();
@@ -78,11 +94,16 @@ public class ProductImpl implements IProduct {
 				productList.add(product);
 			}
 			con.close();
+			//return product list
+			data.put("ProductList", productList);
+			return data;
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			//return db read error
+			data.put("DB Read Error", e.getMessage());
+			return data;
 		}
-		return productList;
 	}
 
 	public String updateProduct(int productId, String productTitle, String productDescription, String productType,
@@ -197,7 +218,7 @@ public class ProductImpl implements IProduct {
 				product.setProductType(rs.getString("productType"));
 				product.setProductCategory(rs.getString("productCategory"));
 
-				data.put("ProductReturned",product);
+				data.put("ProductReturned", product);
 			}
 			con.close();
 			return data;

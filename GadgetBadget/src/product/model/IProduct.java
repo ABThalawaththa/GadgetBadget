@@ -8,7 +8,7 @@ public interface IProduct {
 	public Connection productDBConnection();
 	public String insertProduct(String productTitle,String productDescription,
 			String productType,String productCategory, int researcherId);
-	public List<Product> getAllProducts();
+	public HashMap<String,Object> getAllProducts();
 	public String updateProduct(int productId,String productTitle,String productDescription,
 			String productType,String productCategory);
 	
