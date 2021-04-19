@@ -36,6 +36,18 @@ public class ProductService {
 	}
 	
 	@GET
+	@Path("Specific/{productId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getSpecificProduct(@PathParam ("productId") int productId) {
+		
+		GsonBuilder gb = new GsonBuilder();
+		gb.setPrettyPrinting();
+		
+		Gson gson = gb.create();
+		return gson.toJson(iproduct.getSpecificProduct(productId));
+	}
+	
+	@GET
 	@Path("/{productType}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getProductByType(@PathParam ("productType") String productType) {

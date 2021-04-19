@@ -1,6 +1,7 @@
 package product.model;
 
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
 
 public interface IProduct {
@@ -13,5 +14,6 @@ public interface IProduct {
 	
 	public List<Product> getProductByType(String productType);
 	public String deleteProduct(int productId);
+	public HashMap<String,Object> getSpecificProduct(int productId);
 
 }

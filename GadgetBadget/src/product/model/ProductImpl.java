@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductImpl implements IProduct {
 	public Connection productDBConnection() {
@@ -24,9 +26,9 @@ public class ProductImpl implements IProduct {
 
 		return con;
 	}
-	
-	public String insertProduct(String productTitle,String productDescription,
-			String productType,String productCategory,int researcherId) {
+
+	public String insertProduct(String productTitle, String productDescription, String productType,
+			String productCategory, int researcherId) {
 		String output = "";
 		try {
 			Connection con = productDBConnection();
@@ -35,7 +37,8 @@ public class ProductImpl implements IProduct {
 			}
 
 			// create a prepared statement
-			String query = " insert into products " + "(`productTitle`,`productDescription`,`productType`,`productCategory`,`researcherId`)"
+			String query = " insert into products "
+					+ "(`productTitle`,`productDescription`,`productType`,`productCategory`,`researcherId`)"
 					+ " values (?, ?, ?, ?, ?)";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 
@@ -44,7 +47,7 @@ public class ProductImpl implements IProduct {
 			preparedStmt.setString(2, productDescription);
 			preparedStmt.setString(3, productType);
 			preparedStmt.setString(4, productCategory);
-			preparedStmt.setInt(5,researcherId);
+			preparedStmt.setInt(5, researcherId);
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
@@ -55,8 +58,8 @@ public class ProductImpl implements IProduct {
 		}
 		return output;
 	}
-	
-	public List<Product> getAllProducts(){
+
+	public List<Product> getAllProducts() {
 		List<Product> productList = new ArrayList<Product>();
 		try {
 			Connection con = productDBConnection();
@@ -75,15 +78,15 @@ public class ProductImpl implements IProduct {
 				productList.add(product);
 			}
 			con.close();
-			
+
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 		return productList;
 	}
-	
-	public String updateProduct(int productId,String productTitle,String productDescription,
-			String productType,String productCategory) {
+
+	public String updateProduct(int productId, String productTitle, String productDescription, String productType,
+			String productCategory) {
 		Connection con = productDBConnection();
 		String output = "";
 		if (con == null) {
@@ -113,7 +116,7 @@ public class ProductImpl implements IProduct {
 
 		return output;
 	}
-	
+
 	public List<Product> getProductByType(String productType) {
 		List<Product> productList = new ArrayList<Product>();
 		try {
@@ -134,14 +137,14 @@ public class ProductImpl implements IProduct {
 				productList.add(product);
 			}
 			con.close();
-			
+
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 		return productList;
-		
+
 	}
-	
+
 	public String deleteProduct(int productId) {
 		String output = "";
 
@@ -163,5 +166,46 @@ public class ProductImpl implements IProduct {
 		}
 
 		return output;
+	}
+
+	@Override
+	public HashMap<String, Object> getSpecificProduct(int productId) {
+		// Create Error Message
+		Error em = new Error();
+
+		// Initialize Data to send
+		HashMap<String, Object> data = new HashMap<String, Object>();
+		try {
+			Connection con = productDBConnection();
+			if (con == null) {
+				System.out.println("Error while connecting to the database");
+				em.setErrorMessage("Error while connecting to the database");
+				data.put("ConnectionError", em);
+				return data;
+			}
+
+			String query = "select * from products where productId =" + productId;
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			// iterate through the rows in the result set
+			if (rs.next()) {
+
+				Product product = new Product();
+				product.setProductId(rs.getInt("productId"));
+				product.setProductTitle(rs.getString("productTitle"));
+				product.setProductDescription(rs.getString("productDescription"));
+				product.setProductType(rs.getString("productType"));
+				product.setProductCategory(rs.getString("productCategory"));
+
+				data.put("ProductReturned",product);
+			}
+			con.close();
+			return data;
+
+		} catch (Exception e) {
+			em.setErrorMessage(e.getMessage());
+			data.put("DBReadError", em);
+			return data;
+		}
 	}
 }
