@@ -138,10 +138,25 @@ public class ProductImpl implements IProduct {
 		return output;
 	}
 
-	public List<Product> getProductByType(String productType) {
+	public HashMap<String,Object> getProductByType(String productType) {
+		// To return product List
 		List<Product> productList = new ArrayList<Product>();
+		
+		// Create Error Message
+		Error em = new Error();
+
+		// Initialize Data to send
+		HashMap<String, Object> data = new HashMap<String, Object>();
 		try {
 			Connection con = productDBConnection();
+			if (con == null) {
+				System.out.println("Error while connecting to the database");
+				em.setErrorMessage("Error while connecting to the database");
+				//Return connection error
+				data.put("ConnectionError", em);
+				return data;
+			}
+			
 			// create a prepared statement
 			String query = "select * from products where productType = ?";
 			PreparedStatement preparedStmt;
@@ -158,12 +173,16 @@ public class ProductImpl implements IProduct {
 				productList.add(product);
 			}
 			con.close();
+			//return product list
+			data.put("ProductList", productList);
+			return data;
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			//return db read error
+			data.put("DB Read Error", e.getMessage());
+			return data;
 		}
-		return productList;
-
 	}
 
 	public String deleteProduct(int productId) {

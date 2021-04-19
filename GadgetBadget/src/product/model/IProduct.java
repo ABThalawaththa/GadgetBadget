@@ -12,7 +12,7 @@ public interface IProduct {
 	public String updateProduct(int productId,String productTitle,String productDescription,
 			String productType,String productCategory);
 	
-	public List<Product> getProductByType(String productType);
+	public HashMap<String,Object> getProductByType(String productType);
 	public String deleteProduct(int productId);
 	public HashMap<String,Object> getSpecificProduct(int productId);
 
