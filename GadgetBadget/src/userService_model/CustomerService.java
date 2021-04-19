@@ -64,39 +64,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     	}
     	return isSuccess;//return values
     }
-    public List<Customer> getDetails(String userName) {
-	//impmentation of method
-	ArrayList<Customer> cus = new ArrayList<>();
-	
-	try { 
-		//database connection
-	    con = getConnecton();
-	    stmt = con.createStatement();
-	    String sql = "select * from customer where username='"+userName+"' ";	    
-	    rs = stmt.executeQuery(sql);
-	    
-	    if(rs.next()) {//if condition
-		int id = rs.getInt(1);
-		String name = rs.getString(2);
-		String email = rs.getString(3);
-		String phone = rs.getString(4);
-		String userU = rs.getString(5);
-		String passU = rs.getString(6);
-		String type = rs.getString(7);
-		Customer c = new Customer(id,name,email,phone,userU,passU, type);//declaring object
-		cus.add(c);
-		
-	    }
-	    
-	}
-	catch(Exception e) {
-	    e.printStackTrace();
-	    //log.log(Level.SEVERE, e.getMessage());
-	}
-	
-	return cus;
-	
-    }
+   
     public boolean insertCustomerCare(String from,String to,String subject ,String message){
     	//method implementation
     	
