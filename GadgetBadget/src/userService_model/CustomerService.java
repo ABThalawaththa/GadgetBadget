@@ -195,38 +195,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     	return isSuccess;
     }
  
-    public  List<Customer> getCustomerDetails(String Id) {
-    	//method implemetation
-    	int convertedID = Integer.parseInt(Id);//convert string to integer
-    	
-    	ArrayList<Customer> cus = new ArrayList<>();
-    	
-    	try {//try catch block
-    		//connect with database
-    		con = getConnecton();
-    		stmt = con.createStatement();
-    		String sql = "select * from customer where id='"+convertedID+"'";
-    		rs = stmt.executeQuery(sql);
-    		
-    		while(rs.next()) {
-    			int id = rs.getInt(1);
-    			String name = rs.getString(2);
-    			String email = rs.getString(3);
-    			String phone = rs.getString(4);
-    			String username = rs.getString(5);
-    			String password = rs.getString(6);
-    			String type = rs.getString(7);
-    			Customer c = new Customer(id,name,email,phone,username,password, type);
-    			cus.add(c);
-    		}
-    		
-    	}
-    	catch(Exception e) {
-    		e.printStackTrace();
-    		//log.log(Level.SEVERE, e.getMessage());
-    	}	
-    	return cus;	
-    }
+    
 	public boolean deletemessage(String id) {
 		//method implementation
 		int idd = Integer.parseInt(id);//convert string to int
