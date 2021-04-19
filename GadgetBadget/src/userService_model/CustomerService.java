@@ -8,12 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
+
 
 import userService_util.Helper;
 
 
-public class CustomerService implements ICustomer{//public class name CustomerService which implements ICustomer
+public class CustomerService {//public class name CustomerService which implements ICustomer
 	//declaring
 	//public static final Logger log = Logger.getLogger(AppProperties.class.getName());
 	private static boolean isSuccess;
