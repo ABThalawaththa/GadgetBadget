@@ -11,7 +11,7 @@ import userService_model.CustomerService;
 import org.jsoup.*; 
 import org.jsoup.parser.*; 
 import org.jsoup.nodes.Document; 
-@Path("/Items") 
+@Path("/UserService") 
 public class itemService 
 { 
 	
