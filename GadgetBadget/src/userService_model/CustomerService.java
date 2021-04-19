@@ -354,7 +354,7 @@ public class CustomerService {//public class name CustomerService which implemen
 	 String un = rs.getString("username"); 
 	 String password = rs.getString("password");
 	 String type = rs.getString("type");
-	 // Add into the html table
+	 // Add into the table
 	 output += "<p>" +"Id : "+id + "</p>"; 
 	 output += "<p>" + "Name : "+name + "</p>"; 
 	 output += "<p>" +"Email : "+ email + "</p>"; 
@@ -379,7 +379,7 @@ public class CustomerService {//public class name CustomerService which implemen
 	
 	public void session(String username){
 		
-		 String output = ""; 
+
 		 try
 		 { 
 			 con = getConnecton();
