@@ -22,6 +22,7 @@ import org.jsoup.nodes.Document;
 public class ProductService {
 	
 	IProduct iproduct = new ProductImpl();
+	ProductInterService productinterservice = new ProductInterService();
 	
 	@GET
 	@Path("/")
@@ -59,6 +60,12 @@ public class ProductService {
 		return gson.toJson(iproduct.getProductByType(productType));
 	}
 	
+	@GET
+	@Path("/{productId}/fundingRequests")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getProductByType(@PathParam ("productId") int productID) {
+		return productinterservice.getAllResquestForProduct(productID);
+	}
 	
 	@POST
 	@Path("/")
