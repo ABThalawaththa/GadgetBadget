@@ -1,11 +1,11 @@
-package userService_service;
+package user.service;
 //For REST Service
 import javax.ws.rs.*; 
 import javax.ws.rs.core.MediaType; 
 //For JSON
 import com.google.gson.*;
 
-import userService_model.UserService;
+import user.model.UserService;
 
 //For XML
 import org.jsoup.*; 
