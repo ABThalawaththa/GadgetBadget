@@ -35,10 +35,12 @@ public String readItems(@PathParam("username") String username,
  } 
 @GET
 @Path("/sessiondata/") 
-@Produces(MediaType.TEXT_HTML) 
+@Produces(MediaType.APPLICATION_JSON) 
 public String sessiondata() 
  { 
- return service.sessiondata(); 
+GsonBuilder gb = new GsonBuilder();
+gb.setPrettyPrinting();
+ return gb.create().toJson(service.sessiondata()); 
  }
 
 

@@ -254,23 +254,22 @@ public class User {//public class name CustomerService which implements ICustome
 		 String name = rs.getString("name"); 
 		 String email = rs.getString("email");  
 		 String phone = rs.getString("phone"); 
-		 String un = rs.getString("username"); 
+		 String username = rs.getString("username"); 
 		 String password = rs.getString("password");
 		 String type = rs.getString("type");
-		 // Add into the html table
-		 output += "<p>" +"Id : "+id + "</p>"; 
-		 output += "<p>" + "Name : "+name + "</p>"; 
-		 output += "<p>" +"Email : "+ email + "</p>"; 
-		 output += "<p>" + "Phone : "+phone + "</p>"; 
-		 output += "<p>" +"User Name : "+ un + "</p>"; 
-		 output += "<p>" +"Password : "+ password + "</p>"; 
-		 output += "<p>" +"Type : "+ type + "</p>"; 
-		 // buttons
+		
+		 output += "Id : "+id+","; 
+		 output +=  "Name : "+name+","; 
+		 output +=  "Email : "+ email+"," ; 
+		 output +=  "Phone : "+phone+","; 
+		 output += "User Name : "+ username+"," ; 
+		 output +="Password : "+ password+","; 
+		 output += "Type : "+ type;
 		 
 		 } 
 		 con.close(); 
 		 // Complete the html table
-		 output += "</table>"; 
+		
 		 } 
 		 catch (Exception e) 
 		 { 
