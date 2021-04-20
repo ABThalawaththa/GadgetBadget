@@ -3,23 +3,15 @@ package product.model;
 import java.util.ArrayList;
 import java.util.List;
 
+//Product Model class
 public class Product {
-	
+
 	private int productId;
 	private String productTitle;
 	private String productDescription;
 	private String productType;
 	private String productCategory;
 	private int resercherId;
-	
-
-	public int getResercherId() {
-		return resercherId;
-	}
-
-	public void setResercherId(int resercherId) {
-		this.resercherId = resercherId;
-	}
 
 	public Product(int productId, String productTitle, String productDescription, String productType,
 			String productCategory) {
@@ -31,55 +23,55 @@ public class Product {
 		this.productCategory = productCategory;
 	}
 
-	public Product() {};
+	public Product() {
+	};
 
 	public int getProductId() {
 		return productId;
 	}
 
-
 	public void setProductId(int productId) {
 		this.productId = productId;
 	}
-
 
 	public String getProductTitle() {
 		return productTitle;
 	}
 
-
 	public void setProductTitle(String productTitle) {
 		this.productTitle = productTitle;
 	}
-
 
 	public String getProductDescription() {
 		return productDescription;
 	}
 
-
 	public void setProductDescription(String productDescription) {
 		this.productDescription = productDescription;
 	}
-
 
 	public String getProductType() {
 		return productType;
 	}
 
-
 	public void setProductType(String productType) {
 		this.productType = productType;
 	}
-
 
 	public String getProductCategory() {
 		return productCategory;
 	}
 
-
 	public void setProductCategory(String productCategory) {
 		this.productCategory = productCategory;
+	}
+
+	public int getResercherId() {
+		return resercherId;
+	}
+
+	public void setResercherId(int resercherId) {
+		this.resercherId = resercherId;
 	}
 
 	@Override
@@ -88,9 +80,5 @@ public class Product {
 				+ productDescription + ", productType=" + productType + ", productCategory=" + productCategory
 				+ ", resercherId=" + resercherId + "]";
 	}
-
-	
-
-
 
 }

@@ -1,5 +1,6 @@
 package product.model;
 
+//Handle Error Messages
 public class Error {
 	private String errorMessage;
 	
