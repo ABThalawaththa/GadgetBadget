@@ -11,7 +11,7 @@ public class FundRequest {
 
 	private int fundID;
 
-	private int clientID;
+	private String clientID;
 
 	private int productID;
 
@@ -31,7 +31,7 @@ public class FundRequest {
 
 	}
 
-	public FundRequest(int fundID, int clientID, int productID, String contactName, String contactNo,
+	public FundRequest(int fundID, String clientID, int productID, String contactName, String contactNo,
 			String contactMail, String message, String orgName, Date date) {
 		super();
 		this.fundID = fundID;
@@ -53,11 +53,11 @@ public class FundRequest {
 		this.fundID = fundID;
 	}
 
-	public int getClientID() {
+	public String getClientID() {
 		return clientID;
 	}
 
-	public void setClientID(int clientID) {
+	public void setClientID(String clientID) {
 		this.clientID = clientID;
 	}
 

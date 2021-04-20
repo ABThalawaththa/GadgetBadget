@@ -27,7 +27,9 @@ public class FundRequestService {
 
 	FundRequestImpl fr = new FundRequestImpl();
 
-	// get all the fund requests details as a json file
+	//
+	// get all the fund request details as a json file
+	//
 
 	@GET
 	@Path("/getAllRequests")
@@ -40,7 +42,9 @@ public class FundRequestService {
 
 	}
 
+	//
 	// display all the fund requests as a html table
+	//
 
 	@GET
 	@Path("/")
@@ -48,23 +52,27 @@ public class FundRequestService {
 	public String readRequests() {
 		return fr.readFundRequests();
 	}
-
+	
+	//
 	// insert fund request as a form and store them inside the db
+	//
 
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String insertRequest(@FormParam("clientID") int clientID, @FormParam("productID") int productID,
+	public String insertRequest(@FormParam("productID") int productID,
 			@FormParam("contactName") String contactName, @FormParam("contactNo") String contactNo,
 			@FormParam("contactMail") String contactMail, @FormParam("message") String message,
 			@FormParam("orgName") String orgName) throws ParseException {
 
-		String output = fr.insertRequest(clientID, productID, contactName, contactNo, contactMail, message, orgName);
+		String output = fr.insertRequest(productID, contactName, contactNo, contactMail, message, orgName);
 		return output;
 	}
 
+	//
 	// get fund details as a xml data fString and update the db
+	//
 
 	@PUT
 	@Path("/")
@@ -77,7 +85,7 @@ public class FundRequestService {
 
 		// Read the value from the element <itemID>
 		int fundID = Integer.parseInt(doc.select("fundID").text());
-		int clientID = Integer.parseInt(doc.select("clientID").text());
+		String clientID = doc.select("clientID").text();
 		int productID = Integer.parseInt(doc.select("productID").text());
 		String contactName = doc.select("contactName").text();
 		String contactNo = doc.select("contactNo").text();
@@ -107,14 +115,17 @@ public class FundRequestService {
 				orgName);
 		return output;
 	}
-
+	
+	//
 	// delete the fund request by getting the fund id as a xml data string
+	//
 
 	@DELETE
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String deleteRequest(String data) {
+		
 		// Convert the input string to an XML document
 		Document doc = Jsoup.parse(data, "", Parser.xmlParser());
 
@@ -124,6 +135,7 @@ public class FundRequestService {
 		return output;
 	}
 
+	//
 	// produces fund request details as a xml data by passing the fund id through
 	// url
 
@@ -133,5 +145,20 @@ public class FundRequestService {
 	public FundRequest getRequest(@PathParam("id") int id) {
 		return fr.getFundRequest(id);
 	}
+	
+	
+	//
+	//pass the funding requests to product service by product id
+	//
+	@GET
+	@Path("/fund/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getRequestByProducId(@PathParam("id") int id) {
 
+		GsonBuilder gb = new GsonBuilder();
+		gb.setPrettyPrinting();
+		return gb.create().toJson(fr.getRequestByProducId(id));
+	}
+	
+	
 }

@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import fundRequest.util.RestClient;
+
 public class FundRequestImpl implements IFundRequestImpl {
 
 	// create a connection to the database
@@ -30,7 +35,10 @@ public class FundRequestImpl implements IFundRequestImpl {
 	@Override
 	public String readFundRequests() {
 		// TODO Auto-generated method stub
+		
+		String id = "kamal";//getSession();
 		String output = "";
+		
 		try {
 			Connection con = connect();
 			if (con == null) {
@@ -41,13 +49,13 @@ public class FundRequestImpl implements IFundRequestImpl {
 					+ "<th>Contact Name</th>" + "<th>Contact No</th>" + "<th>Contact Mail</th>" + "<th>Message</th>"
 					+ "<th>Organization Name</th>" + "<th>Date</th>" + "<th>Update</th><th>Remove</th></tr>";
 
-			String query = "select * from fundrequests";
+			String query = "select * from fundrequests where clientID = '"+id+"'";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			// iterate through the rows in the result set
 			while (rs.next()) {
 				String fundID = Integer.toString(rs.getInt("fundID"));
-				String clientID = Integer.toString(rs.getInt("clientID"));
+				String clientID = rs.getString("clientID");
 				String productID = Integer.toString(rs.getInt("productID"));
 				String contactName = rs.getString("contactName");
 				String contactNo = rs.getString("contactNo");
@@ -103,7 +111,7 @@ public class FundRequestImpl implements IFundRequestImpl {
 				FundRequest fr = new FundRequest();
 
 				fr.setFundID(rs.getInt("fundID"));
-				fr.setClientID(rs.getInt("clientID"));
+				fr.setClientID(rs.getString("clientID"));
 				fr.setProductID(rs.getInt("productID"));
 				fr.setContactName(rs.getString("contactName"));
 				fr.setContactNo(rs.getString("contactNo"));
@@ -126,10 +134,11 @@ public class FundRequestImpl implements IFundRequestImpl {
 	// create a new fund request and store the details in the db
 
 	@Override
-	public String insertRequest(int clientID, int productID, String contactName, String contactNo, String contactMail,
+	public String insertRequest(int productID, String contactName, String contactNo, String contactMail,
 			String message, String orgName) {
 
 		// TODO Auto-generated method stub
+		String id = "kamal";//getSession();
 		String output = "";
 
 		try {
@@ -142,7 +151,7 @@ public class FundRequestImpl implements IFundRequestImpl {
 					+ "contactNo, contactMail, message, orgName,date) " + "values (?, ?, ?, ?, ?, ?, ?,?)";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
-			preparedStmt.setInt(1, clientID);
+			preparedStmt.setString(1, id);
 			preparedStmt.setInt(2, productID);
 			preparedStmt.setString(3, contactName);
 			preparedStmt.setString(4, contactNo);
@@ -166,7 +175,7 @@ public class FundRequestImpl implements IFundRequestImpl {
 	// update a fund request details
 
 	@Override
-	public String updateRequest(int fundID, int clientID, int productID, String contactName, String contactNo,
+	public String updateRequest(int fundID, String clientID, int productID, String contactName, String contactNo,
 			String contactMail, String message, String orgName) {
 		// TODO Auto-generated method stub
 		String output = "";
@@ -181,7 +190,7 @@ public class FundRequestImpl implements IFundRequestImpl {
 
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
-			preparedStmt.setInt(1, clientID);
+			preparedStmt.setString(1, clientID);
 			preparedStmt.setInt(2, productID);
 			preparedStmt.setString(3, contactName);
 			preparedStmt.setString(4, contactNo);
@@ -190,6 +199,7 @@ public class FundRequestImpl implements IFundRequestImpl {
 			preparedStmt.setString(7, orgName);
 			preparedStmt.setDate(8, new java.sql.Date(new java.util.Date().getTime()));
 			preparedStmt.setInt(9, fundID);
+			
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
@@ -206,6 +216,8 @@ public class FundRequestImpl implements IFundRequestImpl {
 	@Override
 	public String deleteRequest(int fundID) {
 		// TODO Auto-generated method stub
+		
+		
 		String output = "";
 		try {
 			Connection con = connect();
@@ -236,6 +248,7 @@ public class FundRequestImpl implements IFundRequestImpl {
 	public List<FundRequest> getAllRequests() {
 		// TODO Auto-generated method stub
 
+		String id = "kamal";//getSession();
 		// Prepare the list to store fund requests
 		List<FundRequest> list = new ArrayList<>();
 
@@ -246,14 +259,14 @@ public class FundRequestImpl implements IFundRequestImpl {
 				return null;
 			}
 
-			String query = "select * from fundrequests";
+			String query = "select * from fundrequests where clientID = '" + id + "'";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 
 			// iterate through the rows in the result set
 			while (rs.next()) {
 				int fundID = rs.getInt("fundID");
-				int clientID = rs.getInt("clientID");
+				String clientID = rs.getString("clientID");
 				int productID = rs.getInt("productID");
 				String contactName = rs.getString("contactName");
 				String contactNo = rs.getString("contactNo");
@@ -287,5 +300,87 @@ public class FundRequestImpl implements IFundRequestImpl {
 		}
 		return list;
 	}
+	
+	//
+	//return funding request by product id
+	
+	@Override
+	public List<FundRequest> getRequestByProducId(int id) {
+		// TODO Auto-generated method stub
 
+		// Prepare the list to store fund requests
+		List<FundRequest> list = new ArrayList<>();
+
+		try {
+			Connection con = connect();
+			if (con == null) {
+				System.out.println("Error while connecting to the database");
+				return null;
+			}
+
+			String query = "select * from fundrequests where productID = ?";
+
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+
+			// binding values
+			preparedStmt.setInt(1, id);
+
+			// execute the statement
+			ResultSet rs = preparedStmt.executeQuery();
+
+			// iterate through the rows in the result set
+			while (rs.next()) {
+				int fundID = rs.getInt("fundID");
+				String clientID = rs.getString("clientID");
+				int productID = rs.getInt("productID");
+				String contactName = rs.getString("contactName");
+				String contactNo = rs.getString("contactNo");
+				String contactMail = rs.getString("contactMail");
+				String message = rs.getString("message");
+				String orgName = rs.getString("orgName");
+				Date date = rs.getDate("date");
+
+				// Add into the list
+				FundRequest fr = new FundRequest();
+				fr.setFundID(fundID);
+				fr.setClientID(clientID);
+				fr.setProductID(productID);
+				fr.setContactName(contactName);
+				fr.setContactNo(contactNo);
+				fr.setContactMail(contactMail);
+				fr.setMessage(message);
+				fr.setOrgName(orgName);
+				fr.setDate(date);
+
+				list.add(fr);
+
+			}
+			//close the db connection
+			con.close();
+
+		} catch (Exception e) {
+
+			System.out.println("Error while reading the requests.");
+			return null;
+
+		}
+		return list;
+	}
+
+	//
+	//get client id from session
+	
+	public String getSession() {
+		// TODO Auto-generated method stub
+
+		RestClient client = new RestClient();
+		String data = client.getSession();
+		
+		// Convert the input string to a JSON object 
+		JsonObject jObject = new JsonParser().parse(data).getAsJsonObject();
+		String clientID =jObject.get("username").getAsString();
+
+		return clientID;
+	}
+	
 }
