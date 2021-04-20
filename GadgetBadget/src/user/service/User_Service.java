@@ -5,17 +5,15 @@ import javax.ws.rs.core.MediaType;
 //For JSON
 import com.google.gson.*;
 
-import user.model.UserService;
+import user.model.User;
 
 //For XML
-import org.jsoup.*; 
-import org.jsoup.parser.*; 
-import org.jsoup.nodes.Document; 
+
 @Path("/UserService") 
-public class UserService_Service 
+public class User_Service 
 { 
 	
- UserService service = new UserService();
+ User service = new User();
  
 @GET
 @Path("login/{username}/{password}") 
@@ -43,21 +41,6 @@ public String sessiondata()
  return service.sessiondata(); 
  }
 
-@GET
-@Path("/displayreceivemessage/") 
-@Produces(MediaType.TEXT_HTML) 
-public String displayreceivemessage() 
- { 
- return service.displayreceivemessage(); 
- }
-
-@GET
-@Path("/displaysendmessage/") 
-@Produces(MediaType.TEXT_HTML) 
-public String displaysendmessage() 
- { 
- return service.displaysendmessage(); 
- }
 
 
 @GET
@@ -69,25 +52,6 @@ public String readItems3(@PathParam("username") String username)
  }
 
 
-@POST
-@Path("/reply/") 
-@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
-@Produces(MediaType.TEXT_PLAIN) 
-public String insertItem(@FormParam("from") String from, 
- @FormParam("to") String to, 
- @FormParam("subject") String subject, 
- @FormParam("message") String message) 
-{ 
-	String display="none";
- boolean output = service.insertCustomerCare(from,to,subject ,message); 
- if(output == true) {
-	 display="Inserted successfully"; 
- }
- else {
-	 display="Error when inserting data";
- }
- return display;
-}
 
 
 @POST
@@ -143,28 +107,6 @@ public String updateItem(String itemData)
 return display; 
 }
 
-
-@DELETE
-@Path("/deletemsg/") 
-@Consumes(MediaType.APPLICATION_XML) 
-@Produces(MediaType.TEXT_PLAIN) 
-public String deleteItem(String itemData) 
-{ 
-	String display="no value";
-//Convert the input string to an XML document
- Document doc = Jsoup.parse(itemData, "", Parser.xmlParser()); 
- 
-//Read the value from the element <itemID>
- String id = doc.select("id").text(); 
- boolean output = service.deletemessage(id); 
- if(output == true) {
-	 display = "Deleted Sucessfully";
- }
- else {
-	 display="not deleted successfully";
- }
-return display; 
-}
 
 
 
