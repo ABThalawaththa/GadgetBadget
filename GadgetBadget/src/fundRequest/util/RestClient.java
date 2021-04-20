@@ -33,6 +33,19 @@ public class RestClient {
 		return response.getEntity(String.class);
 		
 	}
+
+	//
+	//get all the products from product management service
+	//
+	public String getAllProducs() {
+		// TODO Auto-generated method stub
+		WebResource webResource = client.resource(REST_URI + "/Products/funding");
+
+        ClientResponse response = webResource.accept("application/json")
+                   .get(ClientResponse.class);
+        
+		return response.getEntity(String.class);
+	}
 	
 	
 	

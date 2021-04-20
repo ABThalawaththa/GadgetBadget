@@ -21,6 +21,7 @@ import com.google.gson.GsonBuilder;
 
 import fundRequest.model.FundRequest;
 import fundRequest.model.FundRequestImpl;
+import fundRequest.util.RestClient;
 
 @Path("/fundRequest")
 public class FundRequestService {
@@ -158,6 +159,19 @@ public class FundRequestService {
 		GsonBuilder gb = new GsonBuilder();
 		gb.setPrettyPrinting();
 		return gb.create().toJson(fr.getRequestByProducId(id));
+	}
+	
+	//
+	//get all products that available for funding
+	//
+	@GET
+	@Path("/fundingproducts")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getAllProducts() {
+
+		RestClient client = new RestClient();
+		
+		return client.getAllProducs();
 	}
 	
 	
