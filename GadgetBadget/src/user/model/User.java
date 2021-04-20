@@ -3,23 +3,22 @@ package user.model;
 //name : W.M.C.S Bandara
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+
 import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.sql.Statement;
-import java.util.ArrayList;
-
-import user.util.Helper;
 
 
-public class UserService {//public class name CustomerService which implements ICustomer
+
+
+public class User {//public class name CustomerService which implements ICustomer
 	//declaring
 	//public static final Logger log = Logger.getLogger(AppProperties.class.getName());
 	private static boolean isSuccess;
 
 	private static Statement stmt = null;
 	private static ResultSet rs = null;
-	private static PreparedStatement pmt=null;
+	
 	
 	private static Connection con=null;
 	

@@ -5,17 +5,17 @@ import javax.ws.rs.core.MediaType;
 //For JSON
 
 
-import admin.model.UserService;
+import admin.model.Admin;
 
 //For XML
 import org.jsoup.*; 
 import org.jsoup.parser.*; 
 import org.jsoup.nodes.Document; 
 @Path("/AdminService") 
-public class UserService_Service 
+public class Admin_Service 
 { 
 	
- UserService service = new UserService();
+ Admin service = new Admin();
  
 
 

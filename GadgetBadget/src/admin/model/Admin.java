@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import user.util.Helper;
 
 
-public class UserService {//public class name CustomerService which implements ICustomer
+public class Admin {//public class name CustomerService which implements ICustomer
 	//declaring
 	//public static final Logger log = Logger.getLogger(AppProperties.class.getName());
-	private static boolean isSuccess;
+	
 
 	private static Statement stmt = null;
-	private static ResultSet rs = null;
+	
 	private static PreparedStatement pmt=null;
 	
 	private static Connection con=null;

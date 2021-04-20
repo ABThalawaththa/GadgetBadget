@@ -5,15 +5,15 @@ import javax.ws.rs.core.MediaType;
 //For JSON
 import com.google.gson.*;
 
-import user.model.UserService;
+import user.model.User;
 
 //For XML
 
 @Path("/UserService") 
-public class UserService_Service 
+public class User_Service 
 { 
 	
- UserService service = new UserService();
+ User service = new User();
  
 @GET
 @Path("login/{username}/{password}") 
