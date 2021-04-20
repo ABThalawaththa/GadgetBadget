@@ -1,4 +1,4 @@
-package userService_model;
+package user.model;
 //IT19058160
 //name : W.M.C.S Bandara
 import java.sql.Connection;
@@ -8,12 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
-import userService_util.Helper;
+import user.util.Helper;
 
 
-public class CustomerService implements ICustomer{//public class name CustomerService which implements ICustomer
+public class UserService {//public class name CustomerService which implements ICustomer
 	//declaring
 	//public static final Logger log = Logger.getLogger(AppProperties.class.getName());
 	private static boolean isSuccess;
@@ -45,7 +44,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
 	}
 	
 	
-    public boolean validatee(String username,String password) {
+    public boolean validate(String username,String password) {
     	try {
     		con=getConnecton();//database connection
     		stmt=con.createStatement();
@@ -64,39 +63,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     	}
     	return isSuccess;//return values
     }
-    public List<Customer> getDetails(String userName) {
-	//impmentation of method
-	ArrayList<Customer> cus = new ArrayList<>();
-	
-	try { 
-		//database connection
-	    con = getConnecton();
-	    stmt = con.createStatement();
-	    String sql = "select * from customer where username='"+userName+"' ";	    
-	    rs = stmt.executeQuery(sql);
-	    
-	    if(rs.next()) {//if condition
-		int id = rs.getInt(1);
-		String name = rs.getString(2);
-		String email = rs.getString(3);
-		String phone = rs.getString(4);
-		String userU = rs.getString(5);
-		String passU = rs.getString(6);
-		String type = rs.getString(7);
-		Customer c = new Customer(id,name,email,phone,userU,passU, type);//declaring object
-		cus.add(c);
-		
-	    }
-	    
-	}
-	catch(Exception e) {
-	    e.printStackTrace();
-	    //log.log(Level.SEVERE, e.getMessage());
-	}
-	
-	return cus;
-	
-    }
+   
     public boolean insertCustomerCare(String from,String to,String subject ,String message){
     	//method implementation
     	
@@ -227,38 +194,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
     	return isSuccess;
     }
  
-    public  List<Customer> getCustomerDetails(String Id) {
-    	//method implemetation
-    	int convertedID = Integer.parseInt(Id);//convert string to integer
-    	
-    	ArrayList<Customer> cus = new ArrayList<>();
-    	
-    	try {//try catch block
-    		//connect with database
-    		con = getConnecton();
-    		stmt = con.createStatement();
-    		String sql = "select * from customer where id='"+convertedID+"'";
-    		rs = stmt.executeQuery(sql);
-    		
-    		while(rs.next()) {
-    			int id = rs.getInt(1);
-    			String name = rs.getString(2);
-    			String email = rs.getString(3);
-    			String phone = rs.getString(4);
-    			String username = rs.getString(5);
-    			String password = rs.getString(6);
-    			String type = rs.getString(7);
-    			Customer c = new Customer(id,name,email,phone,username,password, type);
-    			cus.add(c);
-    		}
-    		
-    	}
-    	catch(Exception e) {
-    		e.printStackTrace();
-    		//log.log(Level.SEVERE, e.getMessage());
-    	}	
-    	return cus;	
-    }
+    
 	public boolean deletemessage(String id) {
 		//method implementation
 		int idd = Integer.parseInt(id);//convert string to int
@@ -288,7 +224,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
 	
 	
 	
-	public String readItems() 
+	public String displayreceivemessage() 
 	 { 
 	 String output = ""; 
 	 try
@@ -343,7 +279,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
 	
 	
 	
-	public String readItems2() 
+	public String displaysendmessage() 
 	 { 
 	 String output = ""; 
 	 try
@@ -417,7 +353,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
 	 String un = rs.getString("username"); 
 	 String password = rs.getString("password");
 	 String type = rs.getString("type");
-	 // Add into the html table
+	 // Add into the table
 	 output += "<p>" +"Id : "+id + "</p>"; 
 	 output += "<p>" + "Name : "+name + "</p>"; 
 	 output += "<p>" +"Email : "+ email + "</p>"; 
@@ -442,7 +378,7 @@ public class CustomerService implements ICustomer{//public class name CustomerSe
 	
 	public void session(String username){
 		
-		 String output = ""; 
+
 		 try
 		 { 
 			 con = getConnecton();
