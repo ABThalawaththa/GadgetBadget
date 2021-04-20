@@ -5,30 +5,33 @@ import javax.ws.rs.core.MediaType;
 //For JSON
 import com.google.gson.*;
 
-import userService_model.CustomerService;
+import userService_model.UserService;
 
 //For XML
 import org.jsoup.*; 
 import org.jsoup.parser.*; 
 import org.jsoup.nodes.Document; 
 @Path("/UserService") 
-public class itemService 
+public class UserService_Service 
 { 
 	
- CustomerService service = new CustomerService();
+ UserService service = new UserService();
  
 @GET
-@Path("/{username}/{password}") 
+@Path("login/{username}/{password}") 
 @Produces(MediaType.TEXT_HTML) 
 public String readItems(@PathParam("username") String username, 
 		 @PathParam("password") String password) 
  { 
 	String display="invalid";
- Boolean output =  service.validatee(username, password);
+ Boolean output =  service.validate(username, password);
  if(output == true) {
 	 service.session(username);
-	 display = "valid";
+	 display = "valid user";
 	 
+ }
+ else {
+	 display="invalid user";
  }
  return display;
  } 
@@ -41,19 +44,19 @@ public String sessiondata()
  }
 
 @GET
-@Path("/msg/") 
+@Path("/displayreceivemessage/") 
 @Produces(MediaType.TEXT_HTML) 
-public String readItems() 
+public String displayreceivemessage() 
  { 
- return service.readItems(); 
+ return service.displayreceivemessage(); 
  }
 
 @GET
-@Path("/msg2/") 
+@Path("/displaysendmessage/") 
 @Produces(MediaType.TEXT_HTML) 
-public String readItems2() 
+public String displaysendmessage() 
  { 
- return service.readItems2(); 
+ return service.displaysendmessage(); 
  }
 
 
@@ -67,7 +70,7 @@ public String readItems3(@PathParam("username") String username)
 
 
 @POST
-@Path("/") 
+@Path("/reply/") 
 @Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
 @Produces(MediaType.TEXT_PLAIN) 
 public String insertItem(@FormParam("from") String from, 
@@ -79,6 +82,9 @@ public String insertItem(@FormParam("from") String from,
  boolean output = service.insertCustomerCare(from,to,subject ,message); 
  if(output == true) {
 	 display="Inserted successfully"; 
+ }
+ else {
+	 display="Error when inserting data";
  }
  return display;
 }
@@ -101,6 +107,9 @@ public String insertItem2(
  if(output == true) {
 	 display="Registered successfully"; 
  }
+ else {
+	 display = "not registered successfully";
+ }
  return display;
 }
 
@@ -108,7 +117,7 @@ public String insertItem2(
 
 
 @PUT
-@Path("/") 
+@Path("/editprofile/") 
 @Consumes(MediaType.APPLICATION_JSON) 
 @Produces(MediaType.TEXT_PLAIN) 
 public String updateItem(String itemData) 
@@ -128,12 +137,15 @@ public String updateItem(String itemData)
  if(output == true) {
 	 display = "updated successfully";
  }
+ else {
+	 display = "not updated successfully";
+ }
 return display; 
 }
 
 
 @DELETE
-@Path("/") 
+@Path("/deletemsg/") 
 @Consumes(MediaType.APPLICATION_XML) 
 @Produces(MediaType.TEXT_PLAIN) 
 public String deleteItem(String itemData) 
@@ -147,6 +159,9 @@ public String deleteItem(String itemData)
  boolean output = service.deletemessage(id); 
  if(output == true) {
 	 display = "Deleted Sucessfully";
+ }
+ else {
+	 display="not deleted successfully";
  }
 return display; 
 }

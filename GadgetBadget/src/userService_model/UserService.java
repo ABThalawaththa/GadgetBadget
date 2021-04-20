@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import userService_util.Helper;
 
 
-public class CustomerService {//public class name CustomerService which implements ICustomer
+public class UserService {//public class name CustomerService which implements ICustomer
 	//declaring
 	//public static final Logger log = Logger.getLogger(AppProperties.class.getName());
 	private static boolean isSuccess;
@@ -45,7 +45,7 @@ public class CustomerService {//public class name CustomerService which implemen
 	}
 	
 	
-    public boolean validatee(String username,String password) {
+    public boolean validate(String username,String password) {
     	try {
     		con=getConnecton();//database connection
     		stmt=con.createStatement();
@@ -225,7 +225,7 @@ public class CustomerService {//public class name CustomerService which implemen
 	
 	
 	
-	public String readItems() 
+	public String displayreceivemessage() 
 	 { 
 	 String output = ""; 
 	 try
@@ -280,7 +280,7 @@ public class CustomerService {//public class name CustomerService which implemen
 	
 	
 	
-	public String readItems2() 
+	public String displaysendmessage() 
 	 { 
 	 String output = ""; 
 	 try
