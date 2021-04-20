@@ -36,6 +36,18 @@ public class ProductService {
 	}
 	
 	@GET
+	@Path("Specific/{productId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getSpecificProduct(@PathParam ("productId") int productId) {
+		
+		GsonBuilder gb = new GsonBuilder();
+		gb.setPrettyPrinting();
+		
+		Gson gson = gb.create();
+		return gson.toJson(iproduct.getSpecificProduct(productId));
+	}
+	
+	@GET
 	@Path("/{productType}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getProductByType(@PathParam ("productType") String productType) {
@@ -53,8 +65,9 @@ public class ProductService {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
 	public String insertProduct(@FormParam("productTitle") String productTitle, @FormParam("productDescription") String productDescription,
-			@FormParam("productType") String productType, @FormParam("productCategory") String productCategory) {
-		String output = iproduct.insertProduct(productTitle, productDescription, productType, productCategory);
+			@FormParam("productType") String productType, @FormParam("productCategory") String productCategory, 
+			@FormParam("researcherID") int researcherID) {
+		String output = iproduct.insertProduct(productTitle, productDescription, productType, productCategory,researcherID);
 		return output;
 	}
 	
@@ -73,7 +86,7 @@ public class ProductService {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
 	public String deleteProduct(@FormParam("productId") int productId) {
-		String output = iproduct.deleteItem(productId);
+		String output = iproduct.deleteProduct(productId);
 		return output;
 	}
 

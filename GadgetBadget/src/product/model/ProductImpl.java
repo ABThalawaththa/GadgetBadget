@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductImpl implements IProduct {
 	public Connection productDBConnection() {
@@ -24,9 +26,9 @@ public class ProductImpl implements IProduct {
 
 		return con;
 	}
-	
-	public String insertProduct(String productTitle,String productDescription,
-			String productType,String productCategory) {
+
+	public String insertProduct(String productTitle, String productDescription, String productType,
+			String productCategory, int researcherId) {
 		String output = "";
 		try {
 			Connection con = productDBConnection();
@@ -35,8 +37,9 @@ public class ProductImpl implements IProduct {
 			}
 
 			// create a prepared statement
-			String query = " insert into products " + "(`productTitle`,`productDescription`,`productType`,`productCategory`)"
-					+ " values (?, ?, ?, ?)";
+			String query = " insert into products "
+					+ "(`productTitle`,`productDescription`,`productType`,`productCategory`,`researcherId`)"
+					+ " values (?, ?, ?, ?, ?)";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 
 			// binding values
@@ -44,6 +47,7 @@ public class ProductImpl implements IProduct {
 			preparedStmt.setString(2, productDescription);
 			preparedStmt.setString(3, productType);
 			preparedStmt.setString(4, productCategory);
+			preparedStmt.setInt(5, researcherId);
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
@@ -54,11 +58,27 @@ public class ProductImpl implements IProduct {
 		}
 		return output;
 	}
-	
-	public List<Product> getAllProducts(){
+
+	public HashMap<String, Object> getAllProducts() {
+		// To return product List
 		List<Product> productList = new ArrayList<Product>();
+		
+		// Create Error Message
+		Error em = new Error();
+
+		// Initialize Data to send
+		HashMap<String, Object> data = new HashMap<String, Object>();
+
 		try {
 			Connection con = productDBConnection();
+			if (con == null) {
+				System.out.println("Error while connecting to the database");
+				em.setErrorMessage("Error while connecting to the database");
+				//Return connection error
+				data.put("ConnectionError", em);
+				return data;
+			}
+
 			// create a prepared statement
 			String query = "select * from products";
 			Statement stmt = con.createStatement();
@@ -70,18 +90,24 @@ public class ProductImpl implements IProduct {
 				product.setProductDescription(rs.getString("productDescription"));
 				product.setProductType(rs.getString("productType"));
 				product.setProductCategory(rs.getString("productCategory"));
+				product.setResercherId(rs.getInt("resercherId"));
 				productList.add(product);
 			}
 			con.close();
-			
+			//return product list
+			data.put("ProductList", productList);
+			return data;
+
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			//return db read error
+			data.put("DB Read Error", e.getMessage());
+			return data;
 		}
-		return productList;
 	}
-	
-	public String updateProduct(int productId,String productTitle,String productDescription,
-			String productType,String productCategory) {
+
+	public String updateProduct(int productId, String productTitle, String productDescription, String productType,
+			String productCategory) {
 		Connection con = productDBConnection();
 		String output = "";
 		if (con == null) {
@@ -111,11 +137,26 @@ public class ProductImpl implements IProduct {
 
 		return output;
 	}
-	
-	public List<Product> getProductByType(String productType) {
+
+	public HashMap<String,Object> getProductByType(String productType) {
+		// To return product List
 		List<Product> productList = new ArrayList<Product>();
+		
+		// Create Error Message
+		Error em = new Error();
+
+		// Initialize Data to send
+		HashMap<String, Object> data = new HashMap<String, Object>();
 		try {
 			Connection con = productDBConnection();
+			if (con == null) {
+				System.out.println("Error while connecting to the database");
+				em.setErrorMessage("Error while connecting to the database");
+				//Return connection error
+				data.put("ConnectionError", em);
+				return data;
+			}
+			
 			// create a prepared statement
 			String query = "select * from products where productType = ?";
 			PreparedStatement preparedStmt;
@@ -132,15 +173,19 @@ public class ProductImpl implements IProduct {
 				productList.add(product);
 			}
 			con.close();
-			
+			//return product list
+			data.put("ProductList", productList);
+			return data;
+
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			//return db read error
+			data.put("DB Read Error", e.getMessage());
+			return data;
 		}
-		return productList;
-		
 	}
-	
-	public String deleteItem(int productId) {
+
+	public String deleteProduct(int productId) {
 		String output = "";
 
 		try {
@@ -161,5 +206,46 @@ public class ProductImpl implements IProduct {
 		}
 
 		return output;
+	}
+
+	@Override
+	public HashMap<String, Object> getSpecificProduct(int productId) {
+		// Create Error Message
+		Error em = new Error();
+
+		// Initialize Data to send
+		HashMap<String, Object> data = new HashMap<String, Object>();
+		try {
+			Connection con = productDBConnection();
+			if (con == null) {
+				System.out.println("Error while connecting to the database");
+				em.setErrorMessage("Error while connecting to the database");
+				data.put("ConnectionError", em);
+				return data;
+			}
+
+			String query = "select * from products where productId =" + productId;
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			// iterate through the rows in the result set
+			if (rs.next()) {
+
+				Product product = new Product();
+				product.setProductId(rs.getInt("productId"));
+				product.setProductTitle(rs.getString("productTitle"));
+				product.setProductDescription(rs.getString("productDescription"));
+				product.setProductType(rs.getString("productType"));
+				product.setProductCategory(rs.getString("productCategory"));
+
+				data.put("ProductReturned", product);
+			}
+			con.close();
+			return data;
+
+		} catch (Exception e) {
+			em.setErrorMessage(e.getMessage());
+			data.put("DBReadError", em);
+			return data;
+		}
 	}
 }
