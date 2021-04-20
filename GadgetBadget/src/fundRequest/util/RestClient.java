@@ -30,7 +30,8 @@ public class RestClient {
         final ClientResponse response = webResource.accept("application/json")
                    .get(ClientResponse.class);
         
-		return response.getEntity(String.class);
+		String test = response.getEntity(String.class);
+		return test;
 		
 	}
 
@@ -44,7 +45,8 @@ public class RestClient {
         final ClientResponse response = webResource.accept("application/json")
                    .get(ClientResponse.class);
         
-		return response.getEntity(String.class);
+		String test = response.getEntity(String.class);
+		return test;
 	}
 	
 	
