@@ -69,7 +69,7 @@ public class ProductService {
 
 	@POST
 	@Path("/")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Consumes({MediaType.APPLICATION_FORM_URLENCODED,MediaType.APPLICATION_JSON})
 	@Produces(MediaType.TEXT_HTML)
 	public String insertProduct(@FormParam("productTitle") String productTitle,
 			@FormParam("productDescription") String productDescription, @FormParam("productType") String productType,
