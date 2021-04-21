@@ -30,7 +30,7 @@ public class ProductTests {
 		//request body data
 		String body = String.format(
 				"productTitle=%s&productDescription=%s&" + "productType=%s&productCategory=%s&researcherID=%s",
-				product.getProductTitle(), product.getProductDescription(), product.getProductType(), product.getProductCategory(),Integer.toString(product.getResercherId()));
+				"Test Product", "Test Product Description", "Selling", "IT","2");
 
 		given().with().header("Content-Type", "application/x-www-form-urlencoded").accept(ContentType.HTML).body(body)
 				.when().post("http://localhost:8080/GadgetBadget/WebApi/Products").then().statusCode(200);
