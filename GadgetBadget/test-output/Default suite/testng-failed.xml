@@ -5,7 +5,7 @@
     <classes>
       <class name="product.testing.ProductTests">
         <methods>
-          <include name="test_POST"/>
+          <include name="test_DELETE"/>
         </methods>
       </class> <!-- product.testing.ProductTests -->
     </classes>
