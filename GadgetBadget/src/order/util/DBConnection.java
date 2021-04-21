@@ -1,0 +1,35 @@
+package order.util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+/**
+ * @author Sathsarani M.W.A.R - IT19151120
+ * 
+ * prepare connection to the DB
+ *
+ */
+public class DBConnection {
+	
+	//Provide the correct details: DBServer/DBName, username, password
+	private static String url = "jdbc:mysql://localhost:3306/it19151120db";
+	private static String username = "root";
+	private static String password = "";
+
+	public static Connection getConnection() {
+		Connection connection = null;
+		try {
+			//load the driver
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(url, username, password);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return connection;
+	}
+
+}
