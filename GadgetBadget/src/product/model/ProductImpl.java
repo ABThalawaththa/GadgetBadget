@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductImpl implements IProduct {
+
+	// DB connection method
 	public Connection productDBConnection() {
 		Connection con = null;
 
@@ -27,6 +29,7 @@ public class ProductImpl implements IProduct {
 		return con;
 	}
 
+	// Method to insert product
 	public String insertProduct(String productTitle, String productDescription, String productType,
 			String productCategory, int researcherId) {
 		String output = "";
@@ -59,10 +62,11 @@ public class ProductImpl implements IProduct {
 		return output;
 	}
 
+	// Method to read all the products in the database
 	public HashMap<String, Object> getAllProducts() {
 		// To return product List
 		List<Product> productList = new ArrayList<Product>();
-		
+
 		// Create Error Message
 		Error em = new Error();
 
@@ -74,7 +78,7 @@ public class ProductImpl implements IProduct {
 			if (con == null) {
 				System.out.println("Error while connecting to the database");
 				em.setErrorMessage("Error while connecting to the database");
-				//Return connection error
+				// Return connection error
 				data.put("ConnectionError", em);
 				return data;
 			}
@@ -94,18 +98,19 @@ public class ProductImpl implements IProduct {
 				productList.add(product);
 			}
 			con.close();
-			//return product list
+			// return product list
 			data.put("ProductList", productList);
 			return data;
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
-			//return db read error
+			// return db read error
 			data.put("DB Read Error", e.getMessage());
 			return data;
 		}
 	}
 
+	// Update details of specific product in the database
 	public String updateProduct(int productId, String productTitle, String productDescription, String productType,
 			String productCategory) {
 		Connection con = productDBConnection();
@@ -133,15 +138,15 @@ public class ProductImpl implements IProduct {
 			output = "Error while inserting";
 			System.err.println(e.getMessage());
 		}
-		// binding values
 
 		return output;
 	}
 
-	public HashMap<String,Object> getProductByType(String productType) {
+	// Read all the products belonged to specific type
+	public HashMap<String, Object> getProductByType(String productType) {
 		// To return product List
 		List<Product> productList = new ArrayList<Product>();
-		
+
 		// Create Error Message
 		Error em = new Error();
 
@@ -152,11 +157,11 @@ public class ProductImpl implements IProduct {
 			if (con == null) {
 				System.out.println("Error while connecting to the database");
 				em.setErrorMessage("Error while connecting to the database");
-				//Return connection error
+				// Return connection error
 				data.put("ConnectionError", em);
 				return data;
 			}
-			
+
 			// create a prepared statement
 			String query = "select * from products where productType = ?";
 			PreparedStatement preparedStmt;
@@ -173,18 +178,19 @@ public class ProductImpl implements IProduct {
 				productList.add(product);
 			}
 			con.close();
-			//return product list
+			// return product list
 			data.put("ProductList", productList);
 			return data;
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
-			//return db read error
+			// return db read error
 			data.put("DB Read Error", e.getMessage());
 			return data;
 		}
 	}
 
+	// delete a product
 	public String deleteProduct(int productId) {
 		String output = "";
 
@@ -208,6 +214,7 @@ public class ProductImpl implements IProduct {
 		return output;
 	}
 
+	// get details of specific product
 	@Override
 	public HashMap<String, Object> getSpecificProduct(int productId) {
 		// Create Error Message
