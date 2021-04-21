@@ -94,7 +94,7 @@ public class ProductImpl implements IProduct {
 				product.setProductDescription(rs.getString("productDescription"));
 				product.setProductType(rs.getString("productType"));
 				product.setProductCategory(rs.getString("productCategory"));
-				product.setResercherId(rs.getInt("resercherId"));
+				product.setResercherId(rs.getInt("researcherId"));
 				productList.add(product);
 			}
 			con.close();
