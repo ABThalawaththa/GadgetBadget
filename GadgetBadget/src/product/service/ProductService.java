@@ -37,7 +37,7 @@ public class ProductService {
 	}
 
 	@GET
-	@Path("Specific/{productId}")
+	@Path("/Specific/{productId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getSpecificProduct(@PathParam("productId") int productId) {
 
