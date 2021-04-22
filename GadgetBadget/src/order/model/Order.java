@@ -46,6 +46,16 @@ public class Order {
 		this.productId = productId;
 		this.buyerId = buyerId;
 	}
+    
+
+	public Order(int orderId, String orderDesc, String orderStatus, int productId, int buyerId) {
+		super();
+		this.orderId = orderId;
+		this.orderDesc = orderDesc;
+		this.orderStatus = orderStatus;
+		this.productId = productId;
+		this.buyerId = buyerId;
+	}
 
 	/**
 	 * @return the orderId
