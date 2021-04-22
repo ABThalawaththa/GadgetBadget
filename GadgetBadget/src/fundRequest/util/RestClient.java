@@ -11,7 +11,7 @@ public class RestClient {
 	//url to access other services
 	
 	private static final String REST_URI = "http://localhost:8081/GadgetBadget/WebApi";
-	private Client client;
+	private final Client client;
 
 	public RestClient() {
 		super();
@@ -20,31 +20,33 @@ public class RestClient {
 
 	}
 
-	//
-	//get the session from user management service
-	//
+	/*
+	*get the session from user management service
+	*/
 	public String getSession() {
 
-		WebResource webResource = client.resource(REST_URI + "/UserService/sessiondata/");
+		final WebResource webResource = client.resource(REST_URI + "/UserService/sessiondata/");
 
-        ClientResponse response = webResource.accept("application/json")
+        final ClientResponse response = webResource.accept("application/json")
                    .get(ClientResponse.class);
         
-		return response.getEntity(String.class);
+		String test = response.getEntity(String.class);
+		return test;
 		
 	}
 
-	//
-	//get all the products from product management service
-	//
+	/*
+	*get all the products from product management service
+	*/
 	public String getAllProducs() {
 		// TODO Auto-generated method stub
-		WebResource webResource = client.resource(REST_URI + "/Products/funding");
+		final WebResource webResource = client.resource(REST_URI + "/Products/funding");
 
-        ClientResponse response = webResource.accept("application/json")
+        final ClientResponse response = webResource.accept("application/json")
                    .get(ClientResponse.class);
         
-		return response.getEntity(String.class);
+		String test = response.getEntity(String.class);
+		return test;
 	}
 	
 	
