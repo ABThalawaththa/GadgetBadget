@@ -9,6 +9,7 @@ import com.google.gson.*;
 
 import order.model.Order;
 import order.service.OrderServiceImpl;
+import order.util.RestClient;
 
 /**
  * Rest controller for order service
@@ -112,6 +113,16 @@ public class OrderRestResource {
 		return output;
 	}
 	
+	// display all products that available for selling
+	@GET
+	@Path("/sellingProducts")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getAllProducts() {
+
+		RestClient client = new RestClient();
+
+		return client.getProducts();
+	}
 	
 
 }
