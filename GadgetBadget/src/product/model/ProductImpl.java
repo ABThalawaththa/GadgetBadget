@@ -9,13 +9,35 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ProductImpl implements IProduct {
 
-	private static Connection connection = null;
-	private static PreparedStatement preparedStmt = null;
-	private static ResultSet rs = null;
+	private static final String RESEARCHER_ID = "researcherId";
+
+	private static final String PRODUCT_CATEGORY = "productCategory";
+
+	private static final String PRODUCT_TYPE = "productType";
+
+	private static final String PRODUCT_DESCRIPTION = "productDescription";
+
+	private static final String PRODUCT_TITLE = "productTitle";
+
+	private static final String PRODUCT_ID = "productId";
+
+	private static final String PRODUCT_RETURNED = "ProductReturned";
+
+	// Initialize logger
+	public static final Logger log = Logger.getLogger(ProductImpl.class.getName());
+
+	private static final String DB_CONNECTION_ERROR = "Error while connecting to the database";
+	private static final String CONNECTION_ERROR = "ConnectionError";
+
+	private Connection connection = null;
+	private PreparedStatement preparedStmt = null;
+	private ResultSet rs = null;
+	private Statement statement = null;
 
 	// DB connection method
 	public Connection productDBConnection() {
@@ -24,7 +46,7 @@ public class ProductImpl implements IProduct {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/productservicedb", "root",
 					"Asiyaamysql1");
 			// For testing
-			System.out.print("Successfully connected");
+			log.log(Level.INFO, "Successfully connected");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -39,7 +61,7 @@ public class ProductImpl implements IProduct {
 		try {
 			connection = productDBConnection();
 			if (connection == null) {
-				return "Error while connecting to the database";
+				return DB_CONNECTION_ERROR;
 			}
 
 			// create a prepared statement
@@ -60,7 +82,21 @@ public class ProductImpl implements IProduct {
 			output = "Inserted successfully";
 		} catch (Exception e) {
 			output = "Error while inserting";
-			System.err.println(e.getMessage());
+			log.log(Level.SEVERE, e.getMessage());
+		} finally {
+			/*
+			 * Close prepared statement and database connectivity at the end of transaction
+			 */
+			try {
+				if (preparedStmt != null) {
+					preparedStmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				log.log(Level.SEVERE, e.getMessage());
+			}
 		}
 		return output;
 	}
@@ -68,48 +104,60 @@ public class ProductImpl implements IProduct {
 	// Method to read all the products in the database
 	public HashMap<String, Object> getAllProducts() {
 		// To return product List
-		List<Product> productList = new ArrayList<Product>();
+		List<Product> productList = new ArrayList<>();
 
 		// Create Error Message
 		Error em = new Error();
 
 		// Initialize Data to send
-		HashMap<String, Object> data = new HashMap<String, Object>();
+		HashMap<String, Object> data = new HashMap<>();
 
 		try {
 			connection = productDBConnection();
 			if (connection == null) {
-				System.out.println("Error while connecting to the database");
-				em.setErrorMessage("Error while connecting to the database");
+				em.setErrorMessage(DB_CONNECTION_ERROR);
 				// Return connection error
-				data.put("ConnectionError", em);
+				data.put(CONNECTION_ERROR, em);
 				return data;
 			}
 
 			// create a prepared statement
-			String query = "select * from products";
-			Statement stmt = connection.createStatement();
-			rs = stmt.executeQuery(query);
+			String query = "select * fom products";
+			statement = connection.createStatement();
+			rs = statement.executeQuery(query);
 			while (rs.next()) {
 				Product product = new Product();
-				product.setProductId(rs.getInt("productId"));
-				product.setProductTitle(rs.getString("productTitle"));
-				product.setProductDescription(rs.getString("productDescription"));
-				product.setProductType(rs.getString("productType"));
-				product.setProductCategory(rs.getString("productCategory"));
-				product.setResercherId(rs.getInt("researcherId"));
+				product.setProductId(rs.getInt(PRODUCT_ID));
+				product.setProductTitle(rs.getString(PRODUCT_TITLE));
+				product.setProductDescription(rs.getString(PRODUCT_DESCRIPTION));
+				product.setProductType(rs.getString(PRODUCT_TYPE));
+				product.setProductCategory(rs.getString(PRODUCT_CATEGORY));
+				product.setResercherId(rs.getInt(RESEARCHER_ID));
 				productList.add(product);
 			}
-			connection.close();
 			// return product list
 			data.put("ProductList", productList);
 			return data;
 
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			log.log(Level.SEVERE, e.getMessage());
 			// return db read error
 			data.put("DB Read Error", e.getMessage());
 			return data;
+		} finally {
+			/*
+			 * Close prepared statement and database connectivity at the end of transaction
+			 */
+			try {
+				if (preparedStmt != null) {
+					preparedStmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				log.log(Level.SEVERE, e.getMessage());
+			}
 		}
 	}
 
@@ -119,11 +167,11 @@ public class ProductImpl implements IProduct {
 		connection = productDBConnection();
 		String output = "";
 		if (connection == null) {
-			return "Error while connecting to the database";
+			return DB_CONNECTION_ERROR;
 		}
 
 		HashMap<String, Object> result = getSpecificProduct(productId);
-		if (result.get("ProductReturned") == null) {
+		if (result.get(PRODUCT_RETURNED) == null) {
 			return "Invalid Product ID, Update Failed";
 		}
 
@@ -143,7 +191,21 @@ public class ProductImpl implements IProduct {
 			output = "updated successfully";
 		} catch (SQLException e) {
 			output = "Error while inserting";
-			System.err.println(e.getMessage());
+			log.log(Level.SEVERE, e.getMessage());
+		} finally {
+			/*
+			 * Close prepared statement and database connectivity at the end of transaction
+			 */
+			try {
+				if (preparedStmt != null) {
+					preparedStmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				log.log(Level.SEVERE, e.getMessage());
+			}
 		}
 
 		return output;
@@ -152,20 +214,19 @@ public class ProductImpl implements IProduct {
 	// Read all the products belonged to specific type
 	public HashMap<String, Object> getProductByType(String productType) {
 		// To return product List
-		List<Product> productList = new ArrayList<Product>();
+		List<Product> productList = new ArrayList<>();
 
 		// Create Error Message
 		Error em = new Error();
 
 		// Initialize Data to send
-		HashMap<String, Object> data = new HashMap<String, Object>();
+		HashMap<String, Object> data = new HashMap<>();
 		try {
 			connection = productDBConnection();
 			if (connection == null) {
-				System.out.println("Error while connecting to the database");
-				em.setErrorMessage("Error while connecting to the database");
+				em.setErrorMessage(DB_CONNECTION_ERROR);
 				// Return connection error
-				data.put("ConnectionError", em);
+				data.put(CONNECTION_ERROR, em);
 				return data;
 			}
 
@@ -176,23 +237,36 @@ public class ProductImpl implements IProduct {
 			rs = preparedStmt.executeQuery();
 			while (rs.next()) {
 				Product product = new Product();
-				product.setProductId(rs.getInt("productId"));
-				product.setProductTitle(rs.getString("productTitle"));
-				product.setProductDescription(rs.getString("productDescription"));
-				product.setProductType(rs.getString("productType"));
-				product.setProductCategory(rs.getString("productCategory"));
+				product.setProductId(rs.getInt(PRODUCT_ID));
+				product.setProductTitle(rs.getString(PRODUCT_TITLE));
+				product.setProductDescription(rs.getString(PRODUCT_DESCRIPTION));
+				product.setProductType(rs.getString(PRODUCT_TYPE));
+				product.setProductCategory(rs.getString(PRODUCT_CATEGORY));
 				productList.add(product);
 			}
-			connection.close();
 			// return product list
 			data.put("ProductList", productList);
 			return data;
 
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			log.log(Level.SEVERE, e.getMessage());
 			// return db read error
 			data.put("DB Read Error", e.getMessage());
 			return data;
+		} finally {
+			/*
+			 * Close prepared statement and database connectivity at the end of transaction
+			 */
+			try {
+				if (preparedStmt != null) {
+					preparedStmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				log.log(Level.SEVERE, e.getMessage());
+			}
 		}
 	}
 
@@ -207,7 +281,7 @@ public class ProductImpl implements IProduct {
 			}
 
 			HashMap<String, Object> result = getSpecificProduct(productId);
-			if (result.get("ProductReturned") == null) {
+			if (result.get(PRODUCT_RETURNED) == null) {
 				return "Invalid Product ID, Delete Failed";
 			}
 
@@ -218,8 +292,23 @@ public class ProductImpl implements IProduct {
 			output = "deleted!";
 
 		} catch (Exception e) {
+			log.log(Level.SEVERE, e.getMessage());
 			output = "Error while updating the items.";
-			System.err.println(e.getMessage());
+
+		} finally {
+			/*
+			 * Close prepared statement and database connectivity at the end of transaction
+			 */
+			try {
+				if (preparedStmt != null) {
+					preparedStmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				log.log(Level.SEVERE, e.getMessage());
+			}
 		}
 
 		return output;
@@ -232,38 +321,54 @@ public class ProductImpl implements IProduct {
 		Error em = new Error();
 
 		// Initialize Data to send
-		HashMap<String, Object> data = new HashMap<String, Object>();
+		HashMap<String, Object> data = new HashMap<>();
 		try {
-			Connection con = productDBConnection();
+			connection = productDBConnection();
 			if (connection == null) {
-				System.out.println("Error while connecting to the database");
-				em.setErrorMessage("Error while connecting to the database");
-				data.put("ConnectionError", em);
+				em.setErrorMessage(DB_CONNECTION_ERROR);
+				data.put(CONNECTION_ERROR, em);
 				return data;
 			}
 
 			String query = "select * from products where productId =" + productId;
-			Statement stmt = connection.createStatement();
-			rs = stmt.executeQuery(query);
+			statement = connection.createStatement();
+			rs = statement.executeQuery(query);
 			// iterate through the rows in the result set
 			if (rs.next()) {
 
 				Product product = new Product();
-				product.setProductId(rs.getInt("productId"));
-				product.setProductTitle(rs.getString("productTitle"));
-				product.setProductDescription(rs.getString("productDescription"));
-				product.setProductType(rs.getString("productType"));
-				product.setProductCategory(rs.getString("productCategory"));
+				product.setProductId(rs.getInt(PRODUCT_ID));
+				product.setProductTitle(rs.getString(PRODUCT_TITLE));
+				product.setProductDescription(rs.getString(PRODUCT_DESCRIPTION));
+				product.setProductType(rs.getString(PRODUCT_TYPE));
+				product.setProductCategory(rs.getString(PRODUCT_CATEGORY));
 
-				data.put("ProductReturned", product);
+				data.put(PRODUCT_RETURNED, product);
 			}
-			connection.close();
 			return data;
 
 		} catch (Exception e) {
+			log.log(Level.SEVERE, e.getMessage());
 			em.setErrorMessage(e.getMessage());
 			data.put("DBReadError", em);
 			return data;
+		}finally {
+			/*
+			 * Close prepared statement and database connectivity at the end of transaction
+			 */
+			try {
+				if (preparedStmt != null) {
+					preparedStmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+				if(statement != null) {
+					statement.close();
+				}
+			} catch (SQLException e) {
+				log.log(Level.SEVERE, e.getMessage());
+			}
 		}
 	}
 }
