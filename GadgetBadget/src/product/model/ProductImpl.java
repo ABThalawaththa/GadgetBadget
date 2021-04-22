@@ -13,7 +13,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ProductImpl implements IProduct {
+	// Initialize logger
+	public static final Logger log = Logger.getLogger(ProductImpl.class.getName());
 
+	
 	private static final String RESEARCHER_ID = "researcherId";
 
 	private static final String PRODUCT_CATEGORY = "productCategory";
@@ -28,15 +31,16 @@ public class ProductImpl implements IProduct {
 
 	private static final String PRODUCT_RETURNED = "ProductReturned";
 
-	// Initialize logger
-	public static final Logger log = Logger.getLogger(ProductImpl.class.getName());
-
 	private static final String DB_CONNECTION_ERROR = "Error while connecting to the database";
+	
 	private static final String CONNECTION_ERROR = "ConnectionError";
 
 	private Connection connection = null;
+	
 	private PreparedStatement preparedStmt = null;
+	
 	private ResultSet rs = null;
+	
 	private Statement statement = null;
 
 	// DB connection method
@@ -352,7 +356,7 @@ public class ProductImpl implements IProduct {
 			em.setErrorMessage(e.getMessage());
 			data.put("DBReadError", em);
 			return data;
-		}finally {
+		} finally {
 			/*
 			 * Close prepared statement and database connectivity at the end of transaction
 			 */
@@ -363,7 +367,7 @@ public class ProductImpl implements IProduct {
 				if (connection != null) {
 					connection.close();
 				}
-				if(statement != null) {
+				if (statement != null) {
 					statement.close();
 				}
 			} catch (SQLException e) {
