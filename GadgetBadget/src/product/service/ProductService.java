@@ -1,8 +1,5 @@
 package product.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 //For REST Service
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -16,12 +13,12 @@ import product.model.ProductImpl;
 //For XML
 import org.jsoup.*;
 import org.jsoup.parser.*;
-import org.jsoup.nodes.Document;
 
 @Path("/Products")
 public class ProductService {
 
 	IProduct iproduct = new ProductImpl();
+
 	ProductInterService productinterservice = new ProductInterService();
 
 	@GET
@@ -69,14 +66,12 @@ public class ProductService {
 
 	@POST
 	@Path("/")
-	@Consumes({MediaType.APPLICATION_FORM_URLENCODED,MediaType.APPLICATION_JSON})
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
 	public String insertProduct(@FormParam("productTitle") String productTitle,
 			@FormParam("productDescription") String productDescription, @FormParam("productType") String productType,
 			@FormParam("productCategory") String productCategory, @FormParam("researcherID") int researcherID) {
-		String output = iproduct.insertProduct(productTitle, productDescription, productType, productCategory,
-				researcherID);
-		return output;
+		return iproduct.insertProduct(productTitle, productDescription, productType, productCategory, researcherID);
 	}
 
 	@PUT
@@ -86,18 +81,15 @@ public class ProductService {
 	public String updateProduct(@FormParam("productId") int productId, @FormParam("productTitle") String productTitle,
 			@FormParam("productDescription") String productDescription, @FormParam("productType") String productType,
 			@FormParam("productCategory") String productCategory) {
-		String output = iproduct.updateProduct(productId, productTitle, productDescription, productType,
-				productCategory);
-		return output;
+		return iproduct.updateProduct(productId, productTitle, productDescription, productType, productCategory);
 	}
 
 	@DELETE
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Produces(MediaType.TEXT_HTML)
+	@Produces(MediaType.APPLICATION_JSON)
 	public String deleteProduct(@FormParam("productId") int productId) {
-		String output = iproduct.deleteProduct(productId);
-		return output;
+		return iproduct.deleteProduct(productId);
 	}
 
 }
