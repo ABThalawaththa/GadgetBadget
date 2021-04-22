@@ -19,5 +19,7 @@ public interface IProduct {
 	public String deleteProduct(int productId);
 
 	public Map<String, Object> getSpecificProduct(int productId);
+	
+	public Map<String, Object> getProductsOfResearcher(int researcherId);
 
 }

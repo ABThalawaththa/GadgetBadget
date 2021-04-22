@@ -10,10 +10,16 @@ import static org.hamcrest.Matchers.*;
 
 public class ProductTests {
 	
+	private static final String APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
+	
+	private static final String BASE_URL = "http://localhost:8080/GadgetBadget/WebApi/Products";
+	
+	private static final String CONTENT_TYPE = "Content-Type";
+
 	//Test Case to test GET Method
 	@Test
 	public void test_GET() {
-		given().get("http://localhost:8080/GadgetBadget/WebApi/Products").then().statusCode(200)
+		given().get(BASE_URL).then().statusCode(200)
 				.body("ProductList.productId[0]", equalTo(1)).log().all();
 	}
 
@@ -32,8 +38,8 @@ public class ProductTests {
 				"productTitle=%s&productDescription=%s&" + "productType=%s&productCategory=%s&researcherID=%s",
 				"Test Product", "Test Product Description", "Selling", "IT","2");
 
-		given().with().header("Content-Type", "application/x-www-form-urlencoded").accept(ContentType.HTML).body(body)
-				.when().post("http://localhost:8080/GadgetBadget/WebApi/Products").then().statusCode(200);
+		given().with().header(CONTENT_TYPE, APPLICATION_X_WWW_FORM_URLENCODED).accept(ContentType.HTML).body(body)
+				.when().post(BASE_URL).then().statusCode(200);
 
 	}
 	
@@ -42,8 +48,8 @@ public class ProductTests {
 	public void test_DELETE() {
 		
 		String body = String.format("productId=%s","7");
-		given().with().header("Content-Type","application/x-www-form-urlencoded").accept(ContentType.HTML).body(body)
-		.when().delete("http://localhost:8080/GadgetBadget/WebApi/Products").then().statusCode(200);
+		given().with().header(CONTENT_TYPE,APPLICATION_X_WWW_FORM_URLENCODED).accept(ContentType.HTML).body(body)
+		.when().delete(BASE_URL).then().statusCode(200);
 	}
 	
 	//Test case to test PUT method
@@ -60,8 +66,8 @@ public class ProductTests {
 				"productId=%s&productTitle=%s&productDescription=%s&" + "productType=%s&productCategory=%s&researcherID=%s",
 				"8","Test Product update","Test Product Description update","Selling","IT","2");
 
-		given().with().header("Content-Type", "application/x-www-form-urlencoded").accept(ContentType.HTML).body(body)
-				.when().put("http://localhost:8080/GadgetBadget/WebApi/Products").then().statusCode(200);
+		given().with().header(CONTENT_TYPE, APPLICATION_X_WWW_FORM_URLENCODED).accept(ContentType.HTML).body(body)
+				.when().put(BASE_URL).then().statusCode(200);
 
 	}
 

@@ -127,7 +127,7 @@ public class ProductImpl implements IProduct {
 			}
 
 			// create a prepared statement
-			String query = "select * fom products";
+			String query = "select * from products";
 			statement = connection.createStatement();
 			rs = statement.executeQuery(query);
 			while (rs.next()) {
@@ -274,6 +274,66 @@ public class ProductImpl implements IProduct {
 			}
 		}
 	}
+	
+	// Read all the products belonged to specific type
+		public Map<String, Object> getProductsOfResearcher(int researcherId) {
+			// To return product List
+			List<Product> productList = new ArrayList<>();
+
+			// Create Error Message
+			Error em = new Error();
+
+			// Initialize Data to send
+			Map<String, Object> data = new HashMap<>();
+			try {
+				connection = productDBConnection();
+				if (connection == null) {
+					em.setErrorMessage(DB_CONNECTION_ERROR);
+					// Return connection error
+					data.put(CONNECTION_ERROR, em);
+					return data;
+				}
+
+				// create a prepared statement
+				String query = "select * from products where researcherId = ?";
+				preparedStmt = connection.prepareStatement(query);
+				preparedStmt.setInt(1, researcherId);
+				rs = preparedStmt.executeQuery();
+				while (rs.next()) {
+					Product product = new Product();
+					product.setProductId(rs.getInt(PRODUCT_ID));
+					product.setProductTitle(rs.getString(PRODUCT_TITLE));
+					product.setProductDescription(rs.getString(PRODUCT_DESCRIPTION));
+					product.setProductType(rs.getString(PRODUCT_TYPE));
+					product.setProductCategory(rs.getString(PRODUCT_CATEGORY));
+					productList.add(product);
+				}
+				// return product list
+				data.put("ProductList", productList);
+				return data;
+
+			} catch (Exception e) {
+				log.log(Level.SEVERE, e.getMessage());
+				// return db read error
+				data.put("DB Read Error", e.getMessage());
+				return data;
+			} finally {
+				/*
+				 * Close prepared statement and database connectivity at the end of transaction
+				 */
+				try {
+					if (preparedStmt != null) {
+						preparedStmt.close();
+					}
+					if (connection != null) {
+						connection.close();
+					}
+				} catch (SQLException e) {
+					log.log(Level.SEVERE, e.getMessage());
+				}
+			}
+		}
+
 
 	// delete a product
 	public String deleteProduct(int productId) {

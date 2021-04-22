@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 
 import product.model.IProduct;
 import product.model.Product;
@@ -15,7 +16,7 @@ public class ProductTesting {
 //		Product product = (Product) hash.get("ProductReturned");
 //		System.out.print(product.getProductId());
 //		System.out.print(product.getProductTitle());
-		HashMap<String,Object> hashmap = iproduct.getAllProducts();
+		Map<String,Object> hashmap = iproduct.getProductsOfResearcher(3);
 		if(hashmap.containsKey("ProductList")) {
 			System.out.print("okey");
 		}
