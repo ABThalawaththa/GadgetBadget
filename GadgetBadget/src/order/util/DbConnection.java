@@ -5,14 +5,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * @author Sathsarani M.W.A.R - IT19151120
- * 
  * prepare connection to the DB
+ * 
+ * @author Sathsarani M.W.A.R - IT19151120
  *
  */
-public class DBConnection {
+public class DbConnection {
 	
-	//Provide the correct details: DBServer/DBName, username, password
+	// Provide the correct details: DBServer/DBName, username, password
 	private static String url = "jdbc:mysql://localhost:3306/it19151120db";
 	private static String username = "root";
 	private static String password = "";
@@ -20,7 +20,7 @@ public class DBConnection {
 	public static Connection getConnection() {
 		Connection connection = null;
 		try {
-			//load the driver
+			// load the driver
 			Class.forName("com.mysql.jdbc.Driver");
 			connection = DriverManager.getConnection(url, username, password);
 			
