@@ -119,6 +119,11 @@ public class ProductImpl implements IProduct {
 			return "Error while connecting to the database";
 		}
 
+		HashMap<String,Object> result = getSpecificProduct(productId);
+		if(result.get("ProductReturned") == null ) {
+			return "Invalid Product ID, Update Failed";
+		}
+		
 		// create a prepared statement
 		String query = " update products set productTitle = ? , productDescription = ? , productType = ? , productCategory = ?  where productId = ? ";
 		PreparedStatement preparedStmt;
@@ -199,6 +204,12 @@ public class ProductImpl implements IProduct {
 			if (con == null) {
 				return "Error while connecting to the database for reading.";
 			}
+			
+			HashMap<String,Object> result = getSpecificProduct(productId);
+			if(result.get("ProductReturned") == null ) {
+				return "Invalid Product ID, Delete Failed";
+			}
+			
 
 			String query = "delete from products where productId = ?";
 			PreparedStatement stmt = con.prepareStatement(query);
