@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -106,7 +107,7 @@ public class ProductImpl implements IProduct {
 	}
 
 	// Method to read all the products in the database
-	public HashMap<String, Object> getAllProducts() {
+	public Map<String, Object> getAllProducts() {
 		// To return product List
 		List<Product> productList = new ArrayList<>();
 
@@ -114,7 +115,7 @@ public class ProductImpl implements IProduct {
 		Error em = new Error();
 
 		// Initialize Data to send
-		HashMap<String, Object> data = new HashMap<>();
+		Map<String, Object> data = new HashMap<>();
 
 		try {
 			connection = productDBConnection();
@@ -174,7 +175,7 @@ public class ProductImpl implements IProduct {
 			return DB_CONNECTION_ERROR;
 		}
 
-		HashMap<String, Object> result = getSpecificProduct(productId);
+		Map<String, Object> result = getSpecificProduct(productId);
 		if (result.get(PRODUCT_RETURNED) == null) {
 			return "Invalid Product ID, Update Failed";
 		}
@@ -216,7 +217,7 @@ public class ProductImpl implements IProduct {
 	}
 
 	// Read all the products belonged to specific type
-	public HashMap<String, Object> getProductByType(String productType) {
+	public Map<String, Object> getProductByType(String productType) {
 		// To return product List
 		List<Product> productList = new ArrayList<>();
 
@@ -224,7 +225,7 @@ public class ProductImpl implements IProduct {
 		Error em = new Error();
 
 		// Initialize Data to send
-		HashMap<String, Object> data = new HashMap<>();
+		Map<String, Object> data = new HashMap<>();
 		try {
 			connection = productDBConnection();
 			if (connection == null) {
@@ -284,7 +285,7 @@ public class ProductImpl implements IProduct {
 				return "Error while connecting to the database for reading.";
 			}
 
-			HashMap<String, Object> result = getSpecificProduct(productId);
+			Map<String, Object> result = getSpecificProduct(productId);
 			if (result.get(PRODUCT_RETURNED) == null) {
 				return "Invalid Product ID, Delete Failed";
 			}
@@ -320,12 +321,12 @@ public class ProductImpl implements IProduct {
 
 	// get details of specific product
 	@Override
-	public HashMap<String, Object> getSpecificProduct(int productId) {
+	public Map<String, Object> getSpecificProduct(int productId) {
 		// Create Error Message
 		Error em = new Error();
 
 		// Initialize Data to send
-		HashMap<String, Object> data = new HashMap<>();
+		Map<String, Object> data = new HashMap<>();
 		try {
 			connection = productDBConnection();
 			if (connection == null) {
