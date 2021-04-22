@@ -1,13 +1,14 @@
 package order.model;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * @author Sathsarani M.W.A.R - IT19151120
- * 
  * Order model class
+ * 
+ * @author Sathsarani M.W.A.R - IT19151120
  *
  */
 
@@ -21,6 +22,31 @@ public class Order {
     private int productId;
     private int buyerId;
     
+    // default constructor
+    public Order() {
+		super();
+	}
+
+	// overloaded constructor
+    public Order(int orderId, String orderDesc, Date orderDate, String orderStatus, int productId, int buyerId) {
+		super();
+		this.orderId = orderId;
+		this.orderDesc = orderDesc;
+		this.orderDate = orderDate;
+		this.orderStatus = orderStatus;
+		this.productId = productId;
+		this.buyerId = buyerId;
+	}
+
+	// constructor with parameters
+    public Order(String orderDesc, String orderStatus, int productId, int buyerId) {
+		super();
+		this.orderDesc = orderDesc;
+		this.orderStatus = orderStatus;
+		this.productId = productId;
+		this.buyerId = buyerId;
+	}
+
 	/**
 	 * @return the orderId
 	 */
@@ -104,9 +130,6 @@ public class Order {
 	public void setBuyerId(int buyerId) {
 		this.buyerId = buyerId;
 	}
-    
-    
-    
     
 
 }
