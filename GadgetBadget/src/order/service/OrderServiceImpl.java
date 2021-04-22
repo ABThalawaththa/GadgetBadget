@@ -39,7 +39,10 @@ public class OrderServiceImpl implements OrderService {
 			 
 			// sql query to insert a new record to order table
 			String sqlQuery = " insert into it19151120db.order (`order_id`,`order_desc`,`order_date`,`order_status`,`order_pid`,`order_buyerid`) " + " values (?, ?, ?, ?, ?, ?)";
-			 
+			
+			// validate product id  
+			//checkProductAvailability(order);
+			
 			// create a prepared statement
 			PreparedStatement preparedStmt = con.prepareStatement(sqlQuery);
 			 
@@ -68,6 +71,11 @@ public class OrderServiceImpl implements OrderService {
 		return output;
 	}
 		 
+//	private void checkProductAvailability(Order order) {
+//		int id = order.setProductId(order.getOrderId());
+//		
+//	}
+
 	// method to retrieve all the details of the orders
 	@Override
 	public String getAllOrders() {
