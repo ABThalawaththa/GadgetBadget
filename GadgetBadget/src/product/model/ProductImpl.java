@@ -13,20 +13,23 @@ import java.util.Map;
 
 public class ProductImpl implements IProduct {
 
+	private static Connection connection = null;
+	private static PreparedStatement preparedStmt = null;
+	private static ResultSet rs = null;
+
 	// DB connection method
 	public Connection productDBConnection() {
-		Connection con = null;
-
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/productservicedb", "root", "Asiyaamysql1");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/productservicedb", "root",
+					"Asiyaamysql1");
 			// For testing
 			System.out.print("Successfully connected");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return con;
+		return connection;
 	}
 
 	// Method to insert product
@@ -34,8 +37,8 @@ public class ProductImpl implements IProduct {
 			String productCategory, int researcherId) {
 		String output = "";
 		try {
-			Connection con = productDBConnection();
-			if (con == null) {
+			connection = productDBConnection();
+			if (connection == null) {
 				return "Error while connecting to the database";
 			}
 
@@ -43,7 +46,7 @@ public class ProductImpl implements IProduct {
 			String query = " insert into products "
 					+ "(`productTitle`,`productDescription`,`productType`,`productCategory`,`researcherId`)"
 					+ " values (?, ?, ?, ?, ?)";
-			PreparedStatement preparedStmt = con.prepareStatement(query);
+			preparedStmt = connection.prepareStatement(query);
 
 			// binding values
 			preparedStmt.setString(1, productTitle);
@@ -53,7 +56,7 @@ public class ProductImpl implements IProduct {
 			preparedStmt.setInt(5, researcherId);
 			// execute the statement
 			preparedStmt.execute();
-			con.close();
+			connection.close();
 			output = "Inserted successfully";
 		} catch (Exception e) {
 			output = "Error while inserting";
@@ -74,8 +77,8 @@ public class ProductImpl implements IProduct {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 
 		try {
-			Connection con = productDBConnection();
-			if (con == null) {
+			connection = productDBConnection();
+			if (connection == null) {
 				System.out.println("Error while connecting to the database");
 				em.setErrorMessage("Error while connecting to the database");
 				// Return connection error
@@ -85,8 +88,8 @@ public class ProductImpl implements IProduct {
 
 			// create a prepared statement
 			String query = "select * from products";
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			Statement stmt = connection.createStatement();
+			rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				Product product = new Product();
 				product.setProductId(rs.getInt("productId"));
@@ -97,7 +100,7 @@ public class ProductImpl implements IProduct {
 				product.setResercherId(rs.getInt("researcherId"));
 				productList.add(product);
 			}
-			con.close();
+			connection.close();
 			// return product list
 			data.put("ProductList", productList);
 			return data;
@@ -113,22 +116,21 @@ public class ProductImpl implements IProduct {
 	// Update details of specific product in the database
 	public String updateProduct(int productId, String productTitle, String productDescription, String productType,
 			String productCategory) {
-		Connection con = productDBConnection();
+		connection = productDBConnection();
 		String output = "";
-		if (con == null) {
+		if (connection == null) {
 			return "Error while connecting to the database";
 		}
 
-		HashMap<String,Object> result = getSpecificProduct(productId);
-		if(result.get("ProductReturned") == null ) {
+		HashMap<String, Object> result = getSpecificProduct(productId);
+		if (result.get("ProductReturned") == null) {
 			return "Invalid Product ID, Update Failed";
 		}
-		
+
 		// create a prepared statement
 		String query = " update products set productTitle = ? , productDescription = ? , productType = ? , productCategory = ?  where productId = ? ";
-		PreparedStatement preparedStmt;
 		try {
-			preparedStmt = con.prepareStatement(query);
+			preparedStmt = connection.prepareStatement(query);
 
 			preparedStmt.setString(1, productTitle);
 			preparedStmt.setString(2, productDescription);
@@ -137,7 +139,7 @@ public class ProductImpl implements IProduct {
 			preparedStmt.setInt(5, productId);
 
 			preparedStmt.executeUpdate();
-			con.close();
+			connection.close();
 			output = "updated successfully";
 		} catch (SQLException e) {
 			output = "Error while inserting";
@@ -158,8 +160,8 @@ public class ProductImpl implements IProduct {
 		// Initialize Data to send
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		try {
-			Connection con = productDBConnection();
-			if (con == null) {
+			connection = productDBConnection();
+			if (connection == null) {
 				System.out.println("Error while connecting to the database");
 				em.setErrorMessage("Error while connecting to the database");
 				// Return connection error
@@ -169,10 +171,9 @@ public class ProductImpl implements IProduct {
 
 			// create a prepared statement
 			String query = "select * from products where productType = ?";
-			PreparedStatement preparedStmt;
-			preparedStmt = con.prepareStatement(query);
+			preparedStmt = connection.prepareStatement(query);
 			preparedStmt.setString(1, productType);
-			ResultSet rs = preparedStmt.executeQuery();
+			rs = preparedStmt.executeQuery();
 			while (rs.next()) {
 				Product product = new Product();
 				product.setProductId(rs.getInt("productId"));
@@ -182,7 +183,7 @@ public class ProductImpl implements IProduct {
 				product.setProductCategory(rs.getString("productCategory"));
 				productList.add(product);
 			}
-			con.close();
+			connection.close();
 			// return product list
 			data.put("ProductList", productList);
 			return data;
@@ -200,21 +201,20 @@ public class ProductImpl implements IProduct {
 		String output = "";
 
 		try {
-			Connection con = productDBConnection();
-			if (con == null) {
+			connection = productDBConnection();
+			if (connection == null) {
 				return "Error while connecting to the database for reading.";
 			}
-			
-			HashMap<String,Object> result = getSpecificProduct(productId);
-			if(result.get("ProductReturned") == null ) {
+
+			HashMap<String, Object> result = getSpecificProduct(productId);
+			if (result.get("ProductReturned") == null) {
 				return "Invalid Product ID, Delete Failed";
 			}
-			
 
 			String query = "delete from products where productId = ?";
-			PreparedStatement stmt = con.prepareStatement(query);
-			stmt.setInt(1, productId);
-			stmt.executeUpdate();
+			preparedStmt = connection.prepareStatement(query);
+			preparedStmt.setInt(1, productId);
+			preparedStmt.executeUpdate();
 			output = "deleted!";
 
 		} catch (Exception e) {
@@ -235,7 +235,7 @@ public class ProductImpl implements IProduct {
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		try {
 			Connection con = productDBConnection();
-			if (con == null) {
+			if (connection == null) {
 				System.out.println("Error while connecting to the database");
 				em.setErrorMessage("Error while connecting to the database");
 				data.put("ConnectionError", em);
@@ -243,8 +243,8 @@ public class ProductImpl implements IProduct {
 			}
 
 			String query = "select * from products where productId =" + productId;
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			Statement stmt = connection.createStatement();
+			rs = stmt.executeQuery(query);
 			// iterate through the rows in the result set
 			if (rs.next()) {
 
@@ -257,7 +257,7 @@ public class ProductImpl implements IProduct {
 
 				data.put("ProductReturned", product);
 			}
-			con.close();
+			connection.close();
 			return data;
 
 		} catch (Exception e) {
