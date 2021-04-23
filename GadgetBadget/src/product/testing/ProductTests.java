@@ -46,8 +46,8 @@ public class ProductTests {
 	@Test
 	public void test_DELETE() {
 
-		String body = String.format("productId=%s", "7");
-		given().with().header(CONTENT_TYPE, APPLICATION_X_WWW_FORM_URLENCODED).accept(ContentType.HTML).body(body)
+		String body = String.format("productId=%s", "11");
+		given().with().header(CONTENT_TYPE, APPLICATION_X_WWW_FORM_URLENCODED).accept(ContentType.JSON).body(body)
 				.when().delete(BASE_URL).then().statusCode(200);
 	}
 
