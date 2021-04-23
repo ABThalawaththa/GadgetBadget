@@ -8,6 +8,7 @@ import com.sun.jersey.api.client.WebResource;
 //product service and other service
 public class ProductInterService {
 	private static final String REST_URI = "http://localhost:8080/GadgetBadget/WebApi";
+	
 	private Client client;
 
 	public ProductInterService() {
