@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import order.model.Order;
 import order.util.DbConnection;
@@ -71,10 +73,6 @@ public class OrderServiceImpl implements OrderService {
 		return output;
 	}
 		 
-//	private void checkProductAvailability(Order order) {
-//		int id = order.setProductId(order.getOrderId());
-//		
-//	}
 
 	// method to retrieve all the details of the orders
 	@Override
@@ -230,6 +228,7 @@ public class OrderServiceImpl implements OrderService {
 		return output; 
 	}
 
+	// method to get order by id
 	@Override
 	public Order getOrderById(int orderId) {
 		
@@ -276,6 +275,96 @@ public class OrderServiceImpl implements OrderService {
 		return order;
 	}
 
-	
+	// method to get order by project id
+	@Override
+	public List<Order> getOrdersByProjectId(int projectId) {
+		List<Order> orderList = new ArrayList<>();
+		
+		try {
+			
+			// get the database connection
+			con = DbConnection.getConnection();
+			 
+			if (con == null) {
+				 
+				System.out.println("Failed to connect to the database for reading order details!!!"); 
+			}
+			 
+			
+			// sql query to retrieve the details of order by project id
+			String sqlQuery = "select * from it19151120db.order where order_pid =" + projectId;
+			 
+			Statement stmt = con.createStatement();
+			 
+			ResultSet rs = stmt.executeQuery(sqlQuery);
+			 
+			while (rs.next()) {
+				Order order = new Order();
+								 
+				order.setOrderId(rs.getInt("order_id"));
+				order.setOrderDesc(rs.getString("order_desc"));
+				order.setOrderDate(rs.getDate("order_date"));
+				order.setOrderStatus(rs.getString("order_status"));
+				order.setProductId(rs.getInt("order_pid"));
+				order.setBuyerId(rs.getInt("order_buyerid"));
+				
+				orderList.add(order);
+				 
+			}
+			 
+			// database connection is going to be closed at the end of transaction
+			con.close();
+			 
+			
+		} catch (Exception e) {
+			System.out.println("Failed to retrieve record due to an error!!");  
+			System.err.println(e.getMessage());
+		}
+		
+		return orderList;
+	}
+
+	// method to update order status
+	@Override
+	public String updateOrderStatus(int orderId, String status) {
+		String output = ""; 
+		
+		try {
+						
+			// get the database connection
+			con = DbConnection.getConnection();
+			 
+			if (con == null) {
+				 
+				System.out.println("Failed to connect to the database for updating the status!!!"); 
+			}
+			 
+			// sql query to update the order status
+			String sqlQuery = "UPDATE it19151120db.order SET order_status = ? WHERE order_id = ?"; 
+			 
+			// create a prepared statement
+			PreparedStatement preparedStmt = con.prepareStatement(sqlQuery);
+			 
+			// binding values
+			preparedStmt.setString(1, status);
+			preparedStmt.setInt(2, orderId); 
+			
+			// execute the statement
+			preparedStmt.execute();
+			
+			// database connection is going to be closed at the end of transaction
+			con.close(); 
+			
+			output = "Order status has been successfully updated!"; 
+			
+		 } catch (Exception e) { 
+			 output = "Failed to update status due to an error!!"; 
+			 System.err.println(e.getMessage()); 
+		 } 
+		
+		 return output; 
+		
+	}
+
 
 }
