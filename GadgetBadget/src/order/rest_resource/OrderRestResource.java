@@ -1,5 +1,6 @@
 package order.rest_resource;
 
+
 //For REST Service
 import javax.ws.rs.*; 
 import javax.ws.rs.core.MediaType; 
@@ -45,6 +46,18 @@ public class OrderRestResource {
 		return gson.toJson(orderObj.getOrderById(id));
 	}
 	
+	// get details of order by project id 
+	@GET
+	@Path("/readOrdersByProject/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String readOrdersByProjectId(@PathParam("projectId") int projectId) {
+		
+		GsonBuilder gb = new GsonBuilder();
+		gb.setPrettyPrinting();
+		return gb.create().toJson(orderObj.getOrdersByProjectId(projectId));
+		
+	}
+		
 	// add an order using form
 	@POST
 	@Path("/addOrder") 
@@ -122,6 +135,18 @@ public class OrderRestResource {
 		RestClient client = new RestClient();
 
 		return client.getProducts();
+	}
+	
+	// update the order status 
+	@PUT
+	@Path("/updateOrderStatus") 
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
+	@Produces(MediaType.TEXT_PLAIN) 
+	public String updateOrder(@FormParam("orderId") int orderId,@FormParam("orderStatus") String orderStatus) {
+		
+		String output = orderObj.updateOrderStatus(orderId, orderStatus);
+	
+		return output;
 	}
 	
 
