@@ -21,6 +21,7 @@ public class ProductService {
 
 	ProductInterService productinterservice = new ProductInterService();
 
+	// To get all the products
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -33,6 +34,7 @@ public class ProductService {
 		return gson.toJson(iproduct.getAllProducts());
 	}
 
+	// To get specific product
 	@GET
 	@Path("/Specific/{productId}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -45,6 +47,7 @@ public class ProductService {
 		return gson.toJson(iproduct.getSpecificProduct(productId));
 	}
 
+	// To get Products according to category
 	@GET
 	@Path("/{productType}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -57,13 +60,23 @@ public class ProductService {
 		return gson.toJson(iproduct.getProductByType(productType));
 	}
 
+	// To get funding requests for specific product
 	@GET
 	@Path("/{productId}/fundingRequests")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getProductByType(@PathParam("productId") int productID) {
+	public String getFundingRequestsForProducts(@PathParam("productId") int productID) {
 		return productinterservice.getAllResquestForProduct(productID);
 	}
-
+	
+	// To get orders belonged to specific product
+	@GET
+	@Path("/{productId}/orders")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getOrdersForProduct(@PathParam("productId") int productID) {
+		return productinterservice.getAllOrdersForProduct(productID);
+	}
+	
+	// To insert new product 
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -74,6 +87,7 @@ public class ProductService {
 		return iproduct.insertProduct(productTitle, productDescription, productType, productCategory, researcherID);
 	}
 
+	// To Update product details
 	@PUT
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -84,6 +98,15 @@ public class ProductService {
 		return iproduct.updateProduct(productId, productTitle, productDescription, productType, productCategory);
 	}
 
+	// To delete product
+	@PUT
+	@Path("/{productId}/orders/{orderID}/{status}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateOrderStatus(@PathParam("productId") int productID,
+			@PathParam("orderID") int orderID,@PathParam("status") String orderStatus) {
+		return productinterservice.sendOrderStatusDetails(orderID, orderStatus);
+	}
+	
 	@DELETE
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
