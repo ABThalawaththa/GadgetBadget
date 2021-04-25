@@ -13,6 +13,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * @author IT19240602
+ *
+ */
 public class ProductImpl implements IProduct {
 	// Initialize logger
 	public static final Logger log = Logger.getLogger(ProductImpl.class.getName());

@@ -1,14 +1,10 @@
 package product.model;
 
+/**
+ * @author IT19240602
+ *
+ */
 //Product Model class
-/**
- * @author IT19240602
- *
- */
-/**
- * @author IT19240602
- *
- */
 public class Product {
 
 	private int productId;

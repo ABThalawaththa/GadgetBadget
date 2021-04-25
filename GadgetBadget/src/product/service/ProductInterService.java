@@ -1,14 +1,19 @@
 package product.service;
 
 import javax.ws.rs.core.MediaType;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.representation.Form;
 
+/**
+ * @author IT19240602
+ *
+ */
+
 //This class handles the interservice communication 
-//product service and other service
+//product service and other service(fund request service / order service)
+
 public class ProductInterService {
 	private static final String REST_URI = "http://localhost:8080/GadgetBadget/WebApi";
 	

@@ -8,6 +8,10 @@ import product.model.Product;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
+/**
+ * @author IT19240602
+ *
+ */
 public class ProductTests {
 
 	private static final String APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
