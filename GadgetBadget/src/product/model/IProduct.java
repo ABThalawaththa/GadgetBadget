@@ -3,6 +3,10 @@ package product.model;
 import java.sql.Connection;
 import java.util.Map;
 
+/**
+ * @author IT19240602
+ *
+ */
 public interface IProduct {
 	public Connection productDBConnection();
 

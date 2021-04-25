@@ -14,6 +14,10 @@ import product.model.ProductImpl;
 import org.jsoup.*;
 import org.jsoup.parser.*;
 
+/**
+ * @author IT19240602
+ *
+ */
 @Path("/Products")
 public class ProductService {
 
