@@ -12,6 +12,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 
+/**
+ * @author Saths
+ *
+ */
 @XmlRootElement
 public class Order {
 	
@@ -22,12 +26,24 @@ public class Order {
     private int productId;
     private int buyerId;
     
-    // default constructor
+    
+    /**
+     * Default constructor
+     */
     public Order() {
 		super();
 	}
 
-	// overloaded constructor
+	
+    /**
+     * Overloaded constructor
+     * @param orderId
+     * @param orderDesc
+     * @param orderDate
+     * @param orderStatus
+     * @param productId
+     * @param buyerId
+     */
     public Order(int orderId, String orderDesc, Date orderDate, String orderStatus, int productId, int buyerId) {
 		super();
 		this.orderId = orderId;
