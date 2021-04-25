@@ -126,7 +126,10 @@ public class OrderRestResource {
 		return output;
 	}
 	
-	// display all products that available for selling
+	/**
+	 * Interservice communication implemented
+	 * display all products that available for selling
+	 */
 	@GET
 	@Path("/sellingProducts")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -137,7 +140,7 @@ public class OrderRestResource {
 		return client.getProducts();
 	}
 	
-	// update the order status 
+	// update the order status once accepted or rejected, using interservice communication
 	@PUT
 	@Path("/updateOrderStatus") 
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
